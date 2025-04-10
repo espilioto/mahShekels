@@ -27,29 +27,6 @@ class _AccountsScreenState extends State<AccountsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0,
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Entries'),
-              Tab(text: 'Stats'),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            _buildListTab(context),
-            const AccountsStatsTab(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildListTab(BuildContext context) {
     final accountProvider = context.watch<AccountProvider>();
 
     return RefreshIndicator(

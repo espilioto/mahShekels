@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../models/category_model.dart';
 import '../providers/category_provider.dart';
-import 'categories_screen_stats_tab.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -30,34 +29,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0,
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Entries'),
-              Tab(text: 'Stats'),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            _buildListTab(context),
-            const CategoriesStatsTab(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildListTab(BuildContext context) {
     final categoryProvider = context.watch<CategoryProvider>();
 
-    return RefreshIndicator(
-      onRefresh: _refreshData,
-      child: _buildContent(categoryProvider),
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: _buildContent(categoryProvider),
+      ),
     );
   }
 
