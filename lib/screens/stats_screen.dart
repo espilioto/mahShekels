@@ -12,24 +12,23 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-        context,
+      _navigatorKey.currentState?.push(
         MaterialPageRoute(
           builder: (context) => const StatsMonthlyBreakdownMainScreen(),
         ),
       );
-    });
-  }
+    });  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Select a report'),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -53,11 +52,9 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                Navigator.push(
-                  context,
+                _navigatorKey.currentState?.pushReplacement(
                   MaterialPageRoute(
-                    builder:
-                        (context) => const StatsMonthlyBreakdownMainScreen(),
+                    builder: (context) => const StatsMonthlyBreakdownMainScreen(),
                   ),
                 );
               },
@@ -72,11 +69,9 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                Navigator.push(
-                  context,
+                _navigatorKey.currentState?.pushReplacement(
                   MaterialPageRoute(
-                    builder:
-                        (context) => const StatsWealthPulseScreen(),
+                    builder: (context) => const StatsWealthPulseScreen(),
                   ),
                 );
               },
@@ -91,17 +86,22 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                Navigator.push(
-                  context,
+                _navigatorKey.currentState?.pushReplacement(
                   MaterialPageRoute(
-                    builder:
-                        (context) => const StatsCategoryDetailsScreen(),
+                    builder: (context) => const StatsCategoryDetailsScreen(),
                   ),
                 );
               },
             ),
           ],
         ),
+      ),
+      body: Navigator(
+        key: _navigatorKey,
+        onGenerateRoute: (settings) {
+          // Fallback for initial route (empty screen)
+          return MaterialPageRoute(builder: (context) => const SizedBox.shrink());
+        },
       ),
     );
   }
