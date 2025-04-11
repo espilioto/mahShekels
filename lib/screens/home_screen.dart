@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'overview_screen.dart';
 import 'statements_screen.dart';
+import 'stats_screen.dart';
 import 'accounts_screen.dart';
 import 'categories_screen.dart';
 
@@ -18,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     const OverviewScreen(),
     const StatementsScreen(),
+    const StatsScreen(),
     const AccountsScreen(),
     const CategoriesScreen(),
   ];
@@ -39,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.receipt),
             label: 'Statements',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.line_axis), label: 'Stats'),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance),
             label: 'Accounts',
