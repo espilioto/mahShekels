@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../providers/account_provider.dart';
 import '../models/account_model.dart';
-import 'accounts_screen_stats_tab.dart';
 
 class AccountsScreen extends StatefulWidget {
   const AccountsScreen({super.key});

@@ -34,10 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.line_axis),
-            label: 'Overview',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Overview'),
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt),
             label: 'Statements',
@@ -51,9 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Categories',
           ),
         ],
-        type:
-            BottomNavigationBarType
-                .fixed, // This is important for more than 3 items
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
