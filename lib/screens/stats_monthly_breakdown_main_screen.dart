@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/chart_data_provider.dart';
-import '../widgets/monthly_summary_card.dart';
+import '../widgets/monthly_breakdown_summary_card.dart';
 
 class StatsMonthlyBreakdownMainScreen extends StatefulWidget {
   const StatsMonthlyBreakdownMainScreen({super.key});

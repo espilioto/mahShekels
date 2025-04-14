@@ -3,7 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../models/stats_breakdown_data_for_month_data_model.dart';
+import '../models/stats_breakdown_data_for_month_model.dart';
 import '../models/overview_balance_chart_data_model.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
 
@@ -12,44 +12,39 @@ class ChartDataProvider with ChangeNotifier {
 
   List<OverviewBalanceChartData> _overviewBalanceChartData = [];
   List<StatsMonthlyBreakdownData> _monthlyBreakdownData = [];
-  StatsMonthlyBreakdownForMonthData _monthlyBreakdownDataForMonth =
-      StatsMonthlyBreakdownForMonthData();
 
   bool _isLoading = false;
   String _errorMessage = '';
 
-  List<OverviewBalanceChartData> get overviewBalanceChartData =>
-      _overviewBalanceChartData;
-  List<StatsMonthlyBreakdownData> get monthlyBreakdownData =>
-      _monthlyBreakdownData;
-  StatsMonthlyBreakdownForMonthData get monthlyBreakdownDataForMonth =>
-      _monthlyBreakdownDataForMonth;
+  List<OverviewBalanceChartData> get overviewBalanceChartData => _overviewBalanceChartData;
+  List<StatsMonthlyBreakdownData> get monthlyBreakdownData => _monthlyBreakdownData;
 
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  Future<void> fetchMonthlyBreakdownDataForMonth(DateTime date) async {
+  Future<StatsBreakdownForMonthData?> fetchMonthlyBreakdownDataForMonth(int month, int year) async {
+    StatsBreakdownForMonthData result;
+
     _isLoading = true;
     notifyListeners();
 
     try {
       final response = await http.get(
-        Uri.parse('$apiUrl/api/Charts/GetBreakdownDataForMonth?date=$date'),
+        Uri.parse('$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year'),
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        _monthlyBreakdownDataForMonth =
-            data
-                .map((json) => StatsMonthlyBreakdownForMonthData.fromJson(json))
-                .toList();
+        result = data.map((json) => StatsBreakdownForMonthData.fromJson(json));
         _errorMessage = '';
+        return result;
       } else {
-        _errorMessage =
-            'Failed to load monthly breakdown data: ${response.statusCode}';
+        _errorMessage = 'Failed to load monthly breakdown data: ${response.statusCode}';
+        return null;
       }
     } catch (e) {
       _errorMessage = 'Error fetching monthly breakdown data: $e';
+      return null;
     } finally {
       _isLoading = false;
       notifyListeners();
