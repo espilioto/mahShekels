@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/providers/chart_data_provider.dart';
 import 'package:provider/provider.dart';
-import '../widgets/donut_chart_with_legend.dart';
+
+import '../providers/chart_data_provider.dart';
+import '../widgets/donut_chart_with_legend_for_accounts.dart';
 import '../widgets/balance_line_chart.dart';
 import '../providers/account_provider.dart';
 
