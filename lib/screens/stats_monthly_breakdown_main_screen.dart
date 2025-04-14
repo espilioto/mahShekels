@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/chart_data_provider.dart';
 import '../widgets/monthly_breakdown_summary_card.dart';
+import 'stats_monthly_breakdown_detail_screen.dart';
 
 class StatsMonthlyBreakdownMainScreen extends StatefulWidget {
   const StatsMonthlyBreakdownMainScreen({super.key});
@@ -40,13 +41,28 @@ class _StatsMonthlyBreakdownMainScreenState
     }
 
     return RefreshIndicator(
-      onRefresh: _refreshData, // Pull-to-refresh
+      onRefresh: _refreshData,
       child: ListView.separated(
         itemCount: provider.monthlyBreakdownData.length,
         separatorBuilder: (context, index) => const Divider(height: 24),
         itemBuilder: (context, index) {
           final month = provider.monthlyBreakdownData[index];
-          return MonthlySummaryCard(month: month); // Reuse your card widget
+          return ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => StatsMonthlyBreakdownDetailScreen(
+                        month: month.month,
+                        year: month.year,
+                      ),
+                ),
+              );
+            },
+            trailing: const Icon(Icons.chevron_right),
+            title: MonthlySummaryCard(month: month),
+          );
         },
       ),
     );

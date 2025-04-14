@@ -1,17 +1,209 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../models/stats_breakdown_data_for_month_model.dart';
+import '../providers/chart_data_provider.dart';
+import '../models/statement_model.dart';
 
 class StatsMonthlyBreakdownDetailScreen extends StatefulWidget {
-  const StatsMonthlyBreakdownDetailScreen({super.key});
+  final int month;
+  final int year;
+
+  const StatsMonthlyBreakdownDetailScreen({
+    super.key,
+    required this.month,
+    required this.year,
+  });
 
   @override
   State<StatsMonthlyBreakdownDetailScreen> createState() =>
-      _StatsMonthlyBreakdownMainScreenState();
+      _StatsMonthlyBreakdownDetailScreenState();
 }
 
-class _StatsMonthlyBreakdownMainScreenState
+class _StatsMonthlyBreakdownDetailScreenState
     extends State<StatsMonthlyBreakdownDetailScreen> {
+  late Future<StatsBreakdownForMonthData?> _monthDataFuture;
+  late ChartDataProvider _chartDataProvider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _chartDataProvider = Provider.of<ChartDataProvider>(context, listen: false);
+    _monthDataFuture = _chartDataProvider.fetchMonthlyBreakdownDataForMonth(
+      widget.month,
+      widget.year,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text('StatsMonthlyBreakdownDetailScreen'));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${_getMonthName(widget.month)} ${widget.year}'),
+      ),
+      body: FutureBuilder<StatsBreakdownForMonthData?>(
+        future: _monthDataFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError || snapshot.data == null) {
+            return Center(child: Text('Error loading data: ${snapshot.error}'));
+          }
+
+          final monthData = snapshot.data!;
+          return _buildDetailContent(monthData);
+        },
+      ),
+    );
+  }
+
+  Widget _buildDetailContent(StatsBreakdownForMonthData monthData) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // Donut Chart Section
+          _buildDonutChart(monthData.donutData),
+
+          const SizedBox(height: 24),
+
+          // Totals Section
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildTotalCard(
+                'Income',
+                monthData.totalIncome,
+                Colors.green,
+                Theme.of(context).textTheme.bodySmall,
+              ),
+              _buildTotalCard(
+                'Balance',
+                monthData.balance,
+                monthData.balance >= 0 ? Colors.green : Colors.red,
+                Theme.of(context).textTheme.bodyLarge,
+              ),
+              _buildTotalCard(
+                'Expenses',
+                monthData.totalExpenses,
+                Colors.red,
+                Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+          const Divider(),
+          const SizedBox(height: 16),
+
+          // Statements Section
+          Text('Transactions', style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 16),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Income Column
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      'Income',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    ...monthData.incomeStatements.map(
+                      (statement) => _buildStatementItem(statement, true),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Expenses Column
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      'Expenses',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    ...monthData.expenseStatements.map(
+                      (statement) => _buildStatementItem(statement, false),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDonutChart(
+    List<StatsMonthlyBreakdownForMonthDonutData> donutData,
+  ) {
+    // Implement your donut chart here using a package like fl_chart
+    // This is a placeholder - you'll need to implement the actual chart
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Center(
+        child: Text(
+          'Donut Chart Placeholder',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTotalCard(
+    String title,
+    num amount,
+    Color color,
+    TextStyle? style,
+  ) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Text(title, style: style),
+            Text(
+              amount.toStringAsFixed(2),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: color,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatementItem(Statement statement, bool isIncome) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      child: ListTile(
+        title: Text(statement.description),
+        subtitle: Text(DateFormat('dd MMMM').format(statement.date)),
+        trailing: Text(
+          isIncome ? '+${statement.amount}' : '${statement.amount}',
+          style: TextStyle(
+            color: isIncome ? Colors.green : Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _getMonthName(int month) {
+    return DateFormat('MMMM').format(DateTime(2020, month));
   }
 }

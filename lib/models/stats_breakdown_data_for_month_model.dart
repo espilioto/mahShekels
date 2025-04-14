@@ -1,6 +1,7 @@
 import '../models/statement_model.dart';
 
 class StatsBreakdownForMonthData {
+  final String title;
   final List<StatsMonthlyBreakdownForMonthDonutData> donutData;
   final List<Statement> incomeStatements;
   final List<Statement> expenseStatements;
@@ -9,6 +10,7 @@ class StatsBreakdownForMonthData {
   final num balance;
 
   StatsBreakdownForMonthData({
+    required this.title,
     required this.donutData,
     required this.incomeStatements,
     required this.expenseStatements,
@@ -19,15 +21,21 @@ class StatsBreakdownForMonthData {
 
   factory StatsBreakdownForMonthData.fromJson(Map<String, dynamic> json) {
     return StatsBreakdownForMonthData(
-      donutData: (json['donutData'] as List)
-          .map((item) => StatsMonthlyBreakdownForMonthDonutData.fromJson(item))
-          .toList(),
-      incomeStatements: (json['incomeStatements'] as List)
-          .map((item) => Statement.fromJson(item))
-          .toList(),
-      expenseStatements: (json['expenseStatements'] as List)
-          .map((item) => Statement.fromJson(item))
-          .toList(),
+      title: json['title'],
+      donutData:
+          (json['donutData'] as List)
+              .map(
+                (item) => StatsMonthlyBreakdownForMonthDonutData.fromJson(item),
+              )
+              .toList(),
+      incomeStatements:
+          (json['incomeStatements'] as List)
+              .map((item) => Statement.fromJson(item))
+              .toList(),
+      expenseStatements:
+          (json['expenseStatements'] as List)
+              .map((item) => Statement.fromJson(item))
+              .toList(),
       totalIncome: json['totalIncome'],
       totalExpenses: json['totalExpenses'],
       balance: json['balance'],
@@ -44,10 +52,12 @@ class StatsMonthlyBreakdownForMonthDonutData {
     required this.value,
   });
 
-  factory StatsMonthlyBreakdownForMonthDonutData.fromJson(Map<String, dynamic> json) {
+  factory StatsMonthlyBreakdownForMonthDonutData.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return StatsMonthlyBreakdownForMonthDonutData(
-      title: json['title'], 
-      value: json['value']
+      title: json['title'],
+      value: json['value'],
     );
   }
 }

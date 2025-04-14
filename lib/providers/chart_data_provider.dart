@@ -16,30 +16,37 @@ class ChartDataProvider with ChangeNotifier {
   bool _isLoading = false;
   String _errorMessage = '';
 
-  List<OverviewBalanceChartData> get overviewBalanceChartData => _overviewBalanceChartData;
-  List<StatsMonthlyBreakdownData> get monthlyBreakdownData => _monthlyBreakdownData;
+  List<OverviewBalanceChartData> get overviewBalanceChartData =>
+      _overviewBalanceChartData;
+  List<StatsMonthlyBreakdownData> get monthlyBreakdownData =>
+      _monthlyBreakdownData;
 
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  Future<StatsBreakdownForMonthData?> fetchMonthlyBreakdownDataForMonth(int month, int year) async {
-    StatsBreakdownForMonthData result;
-
+  Future<StatsBreakdownForMonthData?> fetchMonthlyBreakdownDataForMonth(
+    int month,
+    int year,
+  ) async {
     _isLoading = true;
-    notifyListeners();
+    // Schedule the notification for the next frame instead of immediate
+    Future.microtask(() => notifyListeners());
 
     try {
       final response = await http.get(
-        Uri.parse('$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year'),
+        Uri.parse(
+          '$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year',
+        ),
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        result = data.map((json) => StatsBreakdownForMonthData.fromJson(json));
+        final result = StatsBreakdownForMonthData.fromJson(data);
         _errorMessage = '';
         return result;
       } else {
-        _errorMessage = 'Failed to load monthly breakdown data: ${response.statusCode}';
+        _errorMessage =
+            'Failed to load monthly breakdown data: ${response.statusCode}';
         return null;
       }
     } catch (e) {
@@ -47,7 +54,8 @@ class ChartDataProvider with ChangeNotifier {
       return null;
     } finally {
       _isLoading = false;
-      notifyListeners();
+      // Again, schedule for next frame
+      Future.microtask(() => notifyListeners());
     }
   }
 
