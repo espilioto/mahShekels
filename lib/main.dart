@@ -49,7 +49,11 @@ class MyApp extends StatelessWidget {
           create: (_) => CategoryProvider()..fetchCategories(),
         ),
         ChangeNotifierProvider(
-          create: (_) => ChartDataProvider()..fetchOverviewBalanceChartData(),
+          create:
+              (_) =>
+                  ChartDataProvider()
+                    ..fetchOverviewBalanceChartData()
+                    ..fetchMonthlyBreakdownData(),
         ),
       ],
       child: MaterialApp(

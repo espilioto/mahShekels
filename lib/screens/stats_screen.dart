@@ -24,7 +24,8 @@ class _StatsScreenState extends State<StatsScreen> {
           builder: (context) => const StatsMonthlyBreakdownMainScreen(),
         ),
       );
-    });  }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,8 @@ class _StatsScreenState extends State<StatsScreen> {
                 Navigator.pop(context); // Close drawer
                 _navigatorKey.currentState?.pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => const StatsMonthlyBreakdownMainScreen(),
+                    builder:
+                        (context) => const StatsMonthlyBreakdownMainScreen(),
                   ),
                 );
               },
@@ -100,7 +102,9 @@ class _StatsScreenState extends State<StatsScreen> {
         key: _navigatorKey,
         onGenerateRoute: (settings) {
           // Fallback for initial route (empty screen)
-          return MaterialPageRoute(builder: (context) => const SizedBox.shrink());
+          return MaterialPageRoute(
+            builder: (context) => const SizedBox.shrink(),
+          );
         },
       ),
     );
