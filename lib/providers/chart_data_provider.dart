@@ -27,6 +27,8 @@ class ChartDataProvider with ChangeNotifier {
   Future<StatsBreakdownForMonthData?> fetchMonthlyBreakdownDataForMonth(
     int month,
     int year,
+    bool ignoreInitsAndTransfers,
+    bool ignoreLoans,
   ) async {
     _isLoading = true;
     // Schedule the notification for the next frame instead of immediate
@@ -35,7 +37,7 @@ class ChartDataProvider with ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse(
-          '$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year',
+          '$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year&?ignoreinits=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
       );
 
@@ -59,13 +61,18 @@ class ChartDataProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchMonthlyBreakdownData() async {
+  Future<void> fetchMonthlyBreakdownData(
+    bool ignoreInitsAndTransfers,
+    bool ignoreLoans,
+  ) async {
     _isLoading = true;
     notifyListeners();
 
     try {
       final response = await http.get(
-        Uri.parse('$apiUrl/api/Charts/GetMonthlyBreakdownData'),
+        Uri.parse(
+          '$apiUrl/api/Charts/GetMonthlyBreakdownData?ignoreinits=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+        ),
       );
 
       if (response.statusCode == 200) {

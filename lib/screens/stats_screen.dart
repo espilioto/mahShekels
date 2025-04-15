@@ -4,13 +4,51 @@ import 'package:flutter_application_1/screens/stats_monthly_breakdown_main_scree
 import 'stats_category_details_screen.dart';
 import 'stats_wealth_pulse_screen.dart';
 
-class StatsScreen extends StatelessWidget {
+class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
+
+  @override
+  State<StatsScreen> createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
+  bool _ignoreInitsAndTransfers = true; // Default value set to true
+  bool _ignoreLoans = false; // Default value for ignore loans is false
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('All of my stats ✨')),
+      appBar: AppBar(
+        title: const Text('All of my stats ✨'),
+        actions: [
+          PopupMenuButton<int>(
+            tooltip: 'Ignore filters',
+            onSelected: (value) {
+              setState(() {
+                if (value == 1) {
+                  _ignoreInitsAndTransfers = !_ignoreInitsAndTransfers;
+                } else if (value == 2) {
+                  _ignoreLoans = !_ignoreLoans;
+                }
+              });
+            },
+            itemBuilder:
+                (context) => [
+                  CheckedPopupMenuItem(
+                    value: 1,
+                    checked: _ignoreInitsAndTransfers,
+                    child: const Text('Ignore initial filter'),
+                  ),
+                  CheckedPopupMenuItem(
+                    value: 2,
+                    checked: _ignoreLoans,
+                    child: const Text('Ignore loans'),
+                  ),
+                ],
+            icon: const Icon(Icons.filter_alt),
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -19,21 +57,30 @@ class StatsScreen extends StatelessWidget {
             icon: Icons.calendar_month,
             title: 'Monthly Breakdown',
             subtitle: 'View income & expenses by month',
-            destination: const StatsMonthlyBreakdownMainScreen(),
+            destination: StatsMonthlyBreakdownMainScreen(
+              ignoreInitsAndTransfers: _ignoreInitsAndTransfers,
+              ignoreLoans: _ignoreLoans,
+            ),
           ),
           _buildStatsCard(
             context,
             icon: Icons.monitor_heart,
             title: 'Wealth Pulse',
             subtitle: 'Visualize your overall wealth',
-            destination: const StatsWealthPulseScreen(),
+            destination: StatsWealthPulseScreen(
+              // ignoreInitCategory: _ignoreInitCategory,
+              // ignoreLoanCategory: _ignoreLoanCategory,
+            ),
           ),
           _buildStatsCard(
             context,
             icon: Icons.donut_large_rounded,
             title: 'Category Details',
             subtitle: 'Drill down into spending categories',
-            destination: const StatsCategoryDetailsScreen(),
+            destination: StatsCategoryDetailsScreen(
+              // ignoreInitCategory: _ignoreInitCategory,
+              // ignoreLoanCategory: _ignoreLoanCategory,
+            ),
           ),
         ],
       ),
@@ -54,10 +101,11 @@ class StatsScreen extends StatelessWidget {
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => destination),
-        ),
+        onTap:
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => destination),
+            ),
       ),
     );
   }

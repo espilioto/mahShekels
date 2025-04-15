@@ -6,7 +6,14 @@ import '../widgets/monthly_breakdown_summary_card.dart';
 import 'stats_monthly_breakdown_detail_screen.dart';
 
 class StatsMonthlyBreakdownMainScreen extends StatefulWidget {
-  const StatsMonthlyBreakdownMainScreen({super.key});
+  final bool ignoreInitsAndTransfers;
+  final bool ignoreLoans;
+
+  const StatsMonthlyBreakdownMainScreen({
+    super.key,
+    required this.ignoreInitsAndTransfers,
+    required this.ignoreLoans,
+  });
 
   @override
   State<StatsMonthlyBreakdownMainScreen> createState() =>
