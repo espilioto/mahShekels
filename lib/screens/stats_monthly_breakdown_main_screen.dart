@@ -67,11 +67,12 @@ class _StatsMonthlyBreakdownMainScreenState
   }
 
   void _navigateToDetailScreen(BuildContext context, int month, int year) {
-    Navigator.of(context, rootNavigator: false).push(
+    Navigator.push(
+      context,
       MaterialPageRoute(
         builder:
             (context) =>
-                StatsMonthlyBreakdownDetailScreen(month: month, year: year)
+                StatsMonthlyBreakdownDetailScreen(month: month, year: year),
       ),
     );
   }

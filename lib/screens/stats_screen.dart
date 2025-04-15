@@ -12,19 +12,18 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (context) => const StatsMonthlyBreakdownMainScreen(),
-        ),
-      );
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => const StatsMonthlyBreakdownMainScreen(),
+    //     ),
+    //   );
+    // });
   }
 
   @override
@@ -53,7 +52,7 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                _navigatorKey.currentState?.pushReplacement(
+                Navigator.push(context,
                   MaterialPageRoute(
                     builder:
                         (context) => const StatsMonthlyBreakdownMainScreen(),
@@ -71,7 +70,7 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                _navigatorKey.currentState?.pushReplacement(
+                Navigator.push(context,
                   MaterialPageRoute(
                     builder: (context) => const StatsWealthPulseScreen(),
                   ),
@@ -88,7 +87,7 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                _navigatorKey.currentState?.pushReplacement(
+                Navigator.push(context,
                   MaterialPageRoute(
                     builder: (context) => const StatsCategoryDetailsScreen(),
                   ),
@@ -98,15 +97,7 @@ class _StatsScreenState extends State<StatsScreen> {
           ],
         ),
       ),
-      body: Navigator(
-        key: _navigatorKey,
-        onGenerateRoute: (settings) {
-          // Fallback for initial route (empty screen)
-          return MaterialPageRoute(
-            builder: (context) => const SizedBox.shrink(),
-          );
-        },
-      ),
+      body: const StatsMonthlyBreakdownMainScreen(),
     );
   }
 }
