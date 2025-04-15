@@ -38,25 +38,27 @@ class _StatsMonthlyBreakdownDetailScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${_getMonthName(widget.month)} ${widget.year}'),
-      ),
-      body: FutureBuilder<StatsBreakdownForMonthData?>(
-        future: _monthDataFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        appBar: AppBar(
+          title: Text('${_getMonthName(widget.month)} ${widget.year}'),
+        ),
+        body: FutureBuilder<StatsBreakdownForMonthData?>(
+          future: _monthDataFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (snapshot.hasError || snapshot.data == null) {
-            return Center(child: Text('Error loading data: ${snapshot.error}'));
-          }
+            if (snapshot.hasError || snapshot.data == null) {
+              return Center(
+                child: Text('Error loading data: ${snapshot.error}'),
+              );
+            }
 
-          final monthData = snapshot.data!;
-          return _buildDetailContent(monthData);
-        },
-      ),
-    );
+            final monthData = snapshot.data!;
+            return _buildDetailContent(monthData);
+          },
+        ),
+      );
   }
 
   Widget _buildDetailContent(StatsBreakdownForMonthData monthData) {
