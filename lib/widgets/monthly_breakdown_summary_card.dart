@@ -52,7 +52,7 @@ class MonthlySummaryCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: balanceColor.withOpacity(0.1),
+                      color: balanceColor.withAlpha(25),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
