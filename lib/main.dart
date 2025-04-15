@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/providers/chart_data_provider.dart';
-import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'providers/account_provider.dart';
-import 'providers/category_provider.dart';
-import 'providers/statement_provider.dart';
+
+import '../providers/chart_data_provider.dart';
+import '../screens/home_screen.dart';
+import '../providers/account_provider.dart';
+import '../providers/category_provider.dart';
+import '../providers/statement_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
