@@ -67,11 +67,14 @@ class _StatsMonthlyBreakdownDetailScreenState
   }
 
   Widget _buildDetailContent(StatsBreakdownForMonthData monthData) {
+    final sortedDonutData = List.of(monthData.donutData)
+      ..sort((a, b) => a.value.compareTo(b.value));
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          MonthlyBreakdownDonutChart(data: monthData),
+          MonthlyBreakdownDonutChart(data: sortedDonutData),
 
           const SizedBox(height: 24),
 

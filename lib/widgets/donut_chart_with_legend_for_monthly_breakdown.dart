@@ -6,7 +6,7 @@ import 'donut_chart_indicator.dart';
 import '../models/stats_breakdown_data_for_month_model.dart';
 
 class MonthlyBreakdownDonutChart extends StatelessWidget {
-  final StatsBreakdownForMonthData data;
+  final List<StatsMonthlyBreakdownForMonthDonutData> data;
 
   const MonthlyBreakdownDonutChart({super.key, required this.data});
 
@@ -25,12 +25,12 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
                   sectionsSpace: 1,
                   centerSpaceRadius: 40,
                   startDegreeOffset: -90,
-                  sections: createDonutSections(data.donutData),
+                  sections: createDonutSections(data),
                 ),
               ),
             ),
           ),
-          createLegend(data.donutData),
+          createLegend(data.take(8).toList()),
           const SizedBox(width: 10),
         ],
       ),
@@ -40,25 +40,18 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
   Column createLegend(
     List<StatsMonthlyBreakdownForMonthDonutData> donutSectionData,
   ) {
-    donutSectionData.sort((a, b) => b.value.compareTo(a.value));
-    final totalExpenses = donutSectionData.fold(
-      0.0,
-      (sum, account) => sum + account.value.abs(),
-    );
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
           donutSectionData.asMap().entries.map((sectionData) {
-            final percentage =
-                totalExpenses > 0
-                    ? (sectionData.value.value.abs() / totalExpenses * 100)
-                    : 0;
-
             return Indicator(
               color: List<Color>.from(Colors.primaries)[sectionData.key],
-              text: '${sectionData.value.title} (${percentage.toStringAsFixed(1)}%)',
+              // text: sectionData.value.title.substring(0, sectionData.value.title.length < 15 ? sectionData.value.title.length : 10),
+              text:
+                  sectionData.value.title.length > 15
+                      ? '${sectionData.value.title.substring(0, 11)}...'
+                      : sectionData.value.title,
               isSquare: true,
             );
           }).toList(),
@@ -68,7 +61,6 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
   List<PieChartSectionData> createDonutSections(
     List<StatsMonthlyBreakdownForMonthDonutData> donutSectionData,
   ) {
-    donutSectionData.sort((a, b) => b.value.compareTo(a.value));
     final totalExpenses = donutSectionData.fold(
       0.0,
       (sum, account) => sum + account.value.abs(),
@@ -84,7 +76,10 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
       return PieChartSectionData(
         color: List<Color>.from(Colors.primaries)[index],
         value: sectionData.value.toDouble(),
-        title: percentage > 10 ? '${percentage.toStringAsFixed(0)}%' : '',
+        title:
+            percentage > 7
+                ? '${sectionData.value.abs().toStringAsFixed(0)}€\n(${percentage.toStringAsFixed(0)}%)'
+                : '',
         radius: 60,
         titleStyle: const TextStyle(
           fontSize: 12,
@@ -93,11 +88,5 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
         ),
       );
     });
-  }
-
-  List<Color> _generateColors(int length) {
-    final colors = List<Color>.from(Colors.primaries);
-    colors.shuffle();
-    return colors.take(math.min(length, Colors.primaries.length)).toList();
   }
 }
