@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mahshekels/widgets/donut_chart_with_legend_for_monthly_breakdown.dart';
 import 'package:provider/provider.dart';
 import '../models/stats_breakdown_data_for_month_model.dart';
 import '../providers/chart_data_provider.dart';
@@ -70,12 +71,10 @@ class _StatsMonthlyBreakdownDetailScreenState
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          // Donut Chart Section
-          _buildDonutChart(monthData.donutData),
+          MonthlyBreakdownDonutChart(data: monthData),
 
           const SizedBox(height: 24),
 
-          // Totals Section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -143,26 +142,6 @@ class _StatsMonthlyBreakdownDetailScreenState
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildDonutChart(
-    List<StatsMonthlyBreakdownForMonthDonutData> donutData,
-  ) {
-    // Implement your donut chart here using a package like fl_chart
-    // This is a placeholder - you'll need to implement the actual chart
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Center(
-        child: Text(
-          'Donut Chart Placeholder',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
       ),
     );
   }
