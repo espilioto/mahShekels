@@ -190,8 +190,12 @@ class _StatsMonthlyBreakdownDetailScreenState
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: ListTile(
+        dense: true,
         title: Text(statement.description),
-        subtitle: Text(DateFormat('dd MMMM').format(statement.date)),
+        subtitle: Text(
+          DateFormat('dd MMMM').format(statement.date),
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         trailing: Text(
           isIncome ? '+${statement.amount}' : '${statement.amount}',
           style: TextStyle(

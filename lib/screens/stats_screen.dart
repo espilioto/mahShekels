@@ -4,27 +4,8 @@ import 'package:flutter_application_1/screens/stats_monthly_breakdown_main_scree
 import 'stats_category_details_screen.dart';
 import 'stats_wealth_pulse_screen.dart';
 
-class StatsScreen extends StatefulWidget {
+class StatsScreen extends StatelessWidget {
   const StatsScreen({super.key});
-
-  @override
-  State<StatsScreen> createState() => _StatsScreenState();
-}
-
-class _StatsScreenState extends State<StatsScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => const StatsMonthlyBreakdownMainScreen(),
-    //     ),
-    //   );
-    // });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +33,8 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                Navigator.push(context,
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
                     builder:
                         (context) => const StatsMonthlyBreakdownMainScreen(),
@@ -70,7 +52,8 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                Navigator.push(context,
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
                     builder: (context) => const StatsWealthPulseScreen(),
                   ),
@@ -87,7 +70,8 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
-                Navigator.push(context,
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
                     builder: (context) => const StatsCategoryDetailsScreen(),
                   ),
