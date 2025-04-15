@@ -37,7 +37,7 @@ class ChartDataProvider with ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse(
-          '$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year&?ignoreinits=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+          '$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year&ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
       );
 
@@ -71,7 +71,7 @@ class ChartDataProvider with ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse(
-          '$apiUrl/api/Charts/GetMonthlyBreakdownData?ignoreinits=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+          '$apiUrl/api/Charts/GetMonthlyBreakdownData?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
       );
 

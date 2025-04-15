@@ -26,7 +26,7 @@ class _StatsMonthlyBreakdownMainScreenState
     await Provider.of<ChartDataProvider>(
       context,
       listen: false,
-    ).fetchMonthlyBreakdownData();
+    ).fetchMonthlyBreakdownData(widget.ignoreInitsAndTransfers, widget.ignoreLoans);
   }
 
   @override
@@ -58,7 +58,7 @@ class _StatsMonthlyBreakdownMainScreenState
         final month = provider.monthlyBreakdownData[index];
         return InkWell(
           onTap:
-              () => _navigateToDetailScreen(context, month.month, month.year),
+              () => _navigateToDetailScreen(context, month.month, month.year, widget.ignoreInitsAndTransfers, widget.ignoreLoans),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
@@ -73,13 +73,13 @@ class _StatsMonthlyBreakdownMainScreenState
     );
   }
 
-  void _navigateToDetailScreen(BuildContext context, int month, int year) {
+  void _navigateToDetailScreen(BuildContext context, int month, int year,bool ignoreInitsAndTransfers, bool ignoreLoans) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder:
             (context) =>
-                StatsMonthlyBreakdownDetailScreen(month: month, year: year),
+                StatsMonthlyBreakdownDetailScreen(month: month, year: year, ignoreInitsAndTransfers: ignoreInitsAndTransfers, ignoreLoans: ignoreLoans,),
       ),
     );
   }

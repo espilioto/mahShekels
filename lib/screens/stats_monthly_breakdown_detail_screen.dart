@@ -8,11 +8,16 @@ import '../models/statement_model.dart';
 class StatsMonthlyBreakdownDetailScreen extends StatefulWidget {
   final int month;
   final int year;
+    final bool ignoreInitsAndTransfers;
+  final bool ignoreLoans;
+
 
   const StatsMonthlyBreakdownDetailScreen({
     super.key,
     required this.month,
     required this.year,
+        required this.ignoreInitsAndTransfers,
+    required this.ignoreLoans,
   });
 
   @override
@@ -32,6 +37,8 @@ class _StatsMonthlyBreakdownDetailScreenState
     _monthDataFuture = _chartDataProvider.fetchMonthlyBreakdownDataForMonth(
       widget.month,
       widget.year,
+      widget.ignoreInitsAndTransfers,
+      widget.ignoreLoans
     );
   }
 
