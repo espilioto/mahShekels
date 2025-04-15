@@ -10,78 +10,55 @@ class StatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Center(
-                child: Text(
-                  'All of my stats ✨',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Row(
-                children: [
-                  Icon(Icons.calendar_month),
-                  SizedBox(width: 10),
-                  Text('Monthly breakdown'),
-                ],
-              ),
-              onTap: () {
-                Navigator.pop(context); // Close drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) => const StatsMonthlyBreakdownMainScreen(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: const Row(
-                children: [
-                  Icon(Icons.monitor_heart),
-                  SizedBox(width: 10),
-                  Text('Wealth Pulse'),
-                ],
-              ),
-              onTap: () {
-                Navigator.pop(context); // Close drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const StatsWealthPulseScreen(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: const Row(
-                children: [
-                  Icon(Icons.donut_large_rounded),
-                  SizedBox(width: 10),
-                  Text('Category details'),
-                ],
-              ),
-              onTap: () {
-                Navigator.pop(context); // Close drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const StatsCategoryDetailsScreen(),
-                  ),
-                );
-              },
-            ),
-          ],
+      appBar: AppBar(title: const Text('All of my stats ✨')),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          _buildStatsCard(
+            context,
+            icon: Icons.calendar_month,
+            title: 'Monthly Breakdown',
+            subtitle: 'View income & expenses by month',
+            destination: const StatsMonthlyBreakdownMainScreen(),
+          ),
+          _buildStatsCard(
+            context,
+            icon: Icons.monitor_heart,
+            title: 'Wealth Pulse',
+            subtitle: 'Visualize your overall wealth',
+            destination: const StatsWealthPulseScreen(),
+          ),
+          _buildStatsCard(
+            context,
+            icon: Icons.donut_large_rounded,
+            title: 'Category Details',
+            subtitle: 'Drill down into spending categories',
+            destination: const StatsCategoryDetailsScreen(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatsCard(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Widget destination,
+  }) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: ListTile(
+        leading: Icon(icon, size: 32),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => destination),
         ),
       ),
-      body: const StatsMonthlyBreakdownMainScreen(),
     );
   }
 }
