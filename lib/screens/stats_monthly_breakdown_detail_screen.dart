@@ -184,12 +184,17 @@ class _StatsMonthlyBreakdownDetailScreenState
           DateFormat('dd MMMM').format(statement.date),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        trailing: Text(
-          isIncome ? '+${statement.amount}' : '${statement.amount}',
-          style: TextStyle(
-            color: isIncome ? Colors.green : Colors.red,
-            fontWeight: FontWeight.bold,
-          ),
+        trailing: Column(
+          children: [
+            Text(statement.category.name),
+            Text(
+              isIncome ? '+${statement.amount}' : '${statement.amount}',
+              style: TextStyle(
+                color: isIncome ? Colors.green : Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
     );
