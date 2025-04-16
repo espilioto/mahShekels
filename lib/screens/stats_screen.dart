@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/chart_data_provider.dart';
 import 'stats_monthly_breakdown_main_screen.dart';
 import 'stats_category_details_screen.dart';
 import 'stats_wealth_pulse_screen.dart';
@@ -30,6 +32,14 @@ class _StatsScreenState extends State<StatsScreen> {
                 } else if (value == 2) {
                   _ignoreLoans = !_ignoreLoans;
                 }
+
+                Provider.of<ChartDataProvider>(
+                  context,
+                  listen: false,
+                ).fetchMonthlyBreakdownData(
+                  _ignoreInitsAndTransfers,
+                  _ignoreLoans,
+                );
               });
             },
             itemBuilder:

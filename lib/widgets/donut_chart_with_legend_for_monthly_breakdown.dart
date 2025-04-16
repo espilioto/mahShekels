@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -47,7 +46,6 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
           donutSectionData.asMap().entries.map((sectionData) {
             return Indicator(
               color: List<Color>.from(Colors.primaries)[sectionData.key],
-              // text: sectionData.value.title.substring(0, sectionData.value.title.length < 15 ? sectionData.value.title.length : 10),
               text:
                   sectionData.value.title.length > 15
                       ? '${sectionData.value.title.substring(0, 11)}...'
