@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/chart_data_provider.dart';
 import '../widgets/donut_chart_with_legend_for_accounts.dart';
-import '../widgets/balance_line_chart.dart';
+import '../widgets/overview_balance_line_chart.dart';
 import '../providers/account_provider.dart';
 
 class OverviewScreen extends StatefulWidget {
@@ -49,7 +49,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
           child:
               chartDataProvider.isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : BalanceLineChart(
+                  : OverviewBalanceLineChart(
                     chartData: chartDataProvider.overviewBalanceChartData,
                   ),
         ),

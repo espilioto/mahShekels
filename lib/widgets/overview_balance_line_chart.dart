@@ -4,10 +4,10 @@ import 'package:fl_chart/fl_chart.dart';
 
 import '../models/overview_balance_chart_data_model.dart';
 
-class BalanceLineChart extends StatelessWidget {
+class OverviewBalanceLineChart extends StatelessWidget {
   final List<OverviewBalanceChartData> chartData;
 
-  const BalanceLineChart({super.key, required this.chartData});
+  const OverviewBalanceLineChart({super.key, required this.chartData});
 
   @override
   Widget build(BuildContext context) {

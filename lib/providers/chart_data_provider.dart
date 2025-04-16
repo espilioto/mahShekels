@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import '../models/stats_breakdown_data_for_month_model.dart';
 import '../models/overview_balance_chart_data_model.dart';
+import '../models/stats_category_analytics_chart_data.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
 
 class ChartDataProvider with ChangeNotifier {
@@ -23,6 +24,44 @@ class ChartDataProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
+
+  Future<List<StatsCategoryAnalyticsChartData>?>
+  fetchCategoryAnalyticsChartData(int categoryId) async {
+    _isLoading = true;
+    // Schedule the notification for the next frame instead of immediate
+    Future.microtask(() => notifyListeners());
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '$apiUrl/api/Charts/GetCategoryAnalyticsChartData?categoryId=$categoryId',
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        final result =
+            data
+                .map<StatsCategoryAnalyticsChartData>(
+                  (json) => StatsCategoryAnalyticsChartData.fromJson(json),
+                )
+                .toList();
+        _errorMessage = '';
+        return result;
+      } else {
+        _errorMessage =
+            'Failed to load category analytics chart data: ${response.statusCode}';
+        return null;
+      }
+    } catch (e) {
+      _errorMessage = 'Error fetching category analytics chart data: $e';
+      return null;
+    } finally {
+      _isLoading = false;
+      // Again, schedule for next frame
+      Future.microtask(() => notifyListeners());
+    }
+  }
 
   Future<StatsBreakdownForMonthData?> fetchMonthlyBreakdownDataForMonth(
     int month,

@@ -77,20 +77,14 @@ class _StatsScreenState extends State<StatsScreen> {
             icon: Icons.monitor_heart,
             title: 'Wealth Pulse',
             subtitle: 'Visualize your overall wealth',
-            destination: StatsWealthPulseScreen(
-              // ignoreInitCategory: _ignoreInitCategory,
-              // ignoreLoanCategory: _ignoreLoanCategory,
-            ),
+            destination: StatsWealthPulseScreen(),
           ),
           _buildStatsCard(
             context,
             icon: Icons.donut_large_rounded,
             title: 'Category Details',
             subtitle: 'Drill down into spending categories',
-            destination: StatsCategoryDetailsScreen(
-              // ignoreInitCategory: _ignoreInitCategory,
-              // ignoreLoanCategory: _ignoreLoanCategory,
-            ),
+            destination: StatsCategoryDetailsScreen(),
           ),
         ],
       ),
