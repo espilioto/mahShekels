@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mahshekels/utils/extensions.dart';
 import 'package:mahshekels/widgets/donut_chart_with_legend_for_monthly_breakdown.dart';
 import 'package:provider/provider.dart';
 import '../models/stats_breakdown_data_for_month_model.dart';
@@ -186,7 +187,11 @@ class _StatsMonthlyBreakdownDetailScreenState
         ),
         trailing: Column(
           children: [
-            Text(statement.category.name),
+            Text(
+              statement.category.name.breakOnSpace(),
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+            ),
             Text(
               isIncome ? '+${statement.amount}' : '${statement.amount}',
               style: TextStyle(

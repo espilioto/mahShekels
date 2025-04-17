@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:mahshekels/utils/extensions.dart';
 
 import 'donut_chart_indicator.dart';
 import '../models/stats_breakdown_data_for_month_model.dart';
@@ -47,8 +48,8 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
             return Indicator(
               color: List<Color>.from(Colors.primaries)[sectionData.key],
               text:
-                  sectionData.value.title.length > 15
-                      ? '${sectionData.value.title.substring(0, 11)}...'
+                  sectionData.value.title.length > 25
+                      ? sectionData.value.title.truncateWithEllipsis(15)
                       : sectionData.value.title,
               isSquare: true,
             );

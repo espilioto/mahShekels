@@ -9,10 +9,7 @@ import '../models/stats_category_analytics_chart_data.dart';
 class StatsCategoryAnalyticsChart extends StatelessWidget {
   final List<StatsCategoryAnalyticsChartData> chartData;
 
-  const StatsCategoryAnalyticsChart({
-    super.key, 
-    required this.chartData
-  });
+  const StatsCategoryAnalyticsChart({super.key, required this.chartData});
 
   @override
   Widget build(BuildContext context) {
@@ -73,17 +70,21 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
             ),
             lineBarsData: [
               LineChartBarData(
-                spots: chartData.asMap().entries.map((entry) {
-                  return FlSpot(entry.key.toDouble(), entry.value.amount);
-                }).toList(),
+                spots:
+                    chartData.asMap().entries.map((entry) {
+                      return FlSpot(entry.key.toDouble(), entry.value.amount);
+                    }).toList(),
                 isCurved: true,
-                color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                color:
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
                 barWidth: 3,
                 isStrokeCapRound: true,
                 dotData: const FlDotData(show: false),
                 belowBarData: BarAreaData(
                   show: true,
-                  color: Colors.primaries[Random().nextInt(Colors.primaries.length)].withAlpha(80),
+                  color: Colors
+                      .primaries[Random().nextInt(Colors.primaries.length)]
+                      .withAlpha(80),
                 ),
               ),
             ],
