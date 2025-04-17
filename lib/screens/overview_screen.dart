@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/category_provider.dart';
 import '../providers/chart_data_provider.dart';
 import '../widgets/donut_chart_with_legend_for_accounts.dart';
 import '../widgets/overview_balance_line_chart.dart';
@@ -18,6 +19,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
   Widget build(BuildContext context) {
     final accountProvider = context.watch<AccountProvider>();
     final chartDataProvider = context.watch<ChartDataProvider>();
+    final categoryProvider = context.watch<CategoryProvider>();
 
     return Scaffold(
       body: generateOverview(accountProvider, chartDataProvider),
@@ -25,6 +27,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
         onPressed: () {
           accountProvider.fetchAccounts();
           chartDataProvider.fetchOverviewBalanceChartData();
+          categoryProvider.fetchCategories();
         },
         child: Icon(Icons.refresh),
       ),
