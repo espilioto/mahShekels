@@ -40,7 +40,11 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Transform.rotate(
                           angle: -45,
-                          child: Text(chartData[value.toInt()].date, style: const TextStyle(fontSize: 10),)),
+                          child: Text(
+                            chartData[value.toInt()].date,
+                            style: const TextStyle(fontSize: 10),
+                          ),
+                        ),
                       );
                     }
                     return const Text('');
@@ -74,7 +78,10 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
               LineChartBarData(
                 spots:
                     chartData.asMap().entries.map((entry) {
-                      return FlSpot(entry.key.toDouble(), entry.value.amount.toDouble());
+                      return FlSpot(
+                        entry.key.toDouble(),
+                        entry.value.amount.toDouble(),
+                      );
                     }).toList(),
                 isCurved: false,
                 color:

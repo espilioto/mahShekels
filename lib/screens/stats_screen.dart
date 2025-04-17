@@ -64,7 +64,7 @@ class _StatsScreenState extends State<StatsScreen> {
         children: [
           _buildStatsCard(
             context,
-            icon: Icons.calendar_month,
+            icon: Icon(Icons.calendar_month, color: Colors.green, size: 32,),
             title: 'Monthly Breakdown',
             subtitle: 'View income & expenses by month',
             destination: StatsMonthlyBreakdownMainScreen(
@@ -74,14 +74,14 @@ class _StatsScreenState extends State<StatsScreen> {
           ),
           _buildStatsCard(
             context,
-            icon: Icons.monitor_heart,
-            title: 'Wealth Pulse',
-            subtitle: 'Visualize your overall wealth',
+            icon: Icon(Icons.monitor_heart, color: Colors.red, size: 32,),
+            title: 'Jew Pulse',
+            subtitle: 'Visualize your savings rate',
             destination: StatsWealthPulseScreen(),
           ),
           _buildStatsCard(
             context,
-            icon: Icons.donut_large_rounded,
+            icon: Icon(Icons.donut_large_rounded, color: Colors.amber, size: 32,),
             title: 'Category Details',
             subtitle: 'Drill down into spending categories',
             destination: StatsCategoryDetailsScreen(),
@@ -93,7 +93,7 @@ class _StatsScreenState extends State<StatsScreen> {
 
   Widget _buildStatsCard(
     BuildContext context, {
-    required IconData icon,
+    required Icon icon,
     required String title,
     required String subtitle,
     required Widget destination,
@@ -101,7 +101,7 @@ class _StatsScreenState extends State<StatsScreen> {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: ListTile(
-        leading: Icon(icon, size: 32),
+        leading: icon,
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.chevron_right),
