@@ -17,7 +17,7 @@ class StatsCategoryDetailsScreen extends StatefulWidget {
 
 class _StatsMonthlyBreakdownMainScreenState
     extends State<StatsCategoryDetailsScreen> {
-  int _selectedCategoryId = -1;
+  int? _selectedCategoryId; // Track the selected category object
   late Future<List<StatsCategoryAnalyticsChartData>?> _chartDataFuture;
 
   @override
@@ -34,34 +34,27 @@ class _StatsMonthlyBreakdownMainScreenState
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             DropdownButtonHideUnderline(
-              child: DropdownButton<StatementCategory>(
+              child: DropdownButton<int>(
+                value: _selectedCategoryId,
+                hint: const Text('Categories'),
                 items: [
-                  const DropdownMenuItem(
-                    value: null,
-                    child: Text('Categories'),
-                  ),
                   ...categories.map(
                     (category) => DropdownMenuItem(
-                      value: category,
-                      child: Row(
-                        children: [
-                          _selectedCategoryId == category.id
-                              ? const Icon(Icons.check, size: 20)
-                              : const SizedBox(width: 20),
-                          Text(category.name),
-                        ],
-                      ),
+                      value: category.id,
+                      child: Row(children: [Text(category.name)]),
                     ),
                   ),
                 ],
-                onChanged: (StatementCategory? category) {
+                onChanged: (int? categoryId) {
                   setState(() {
-                    if (category != null) {
-                      _selectedCategoryId = category.id;
+                    if (categoryId != null) {
+                      _selectedCategoryId = categoryId;
+                    } else {
+                      _selectedCategoryId = null;
                     }
 
                     _chartDataFuture = chartDataProvider
-                        .fetchCategoryAnalyticsChartData(_selectedCategoryId);
+                        .fetchCategoryAnalyticsChartData(_selectedCategoryId!);
                   });
                 },
               ),
@@ -70,8 +63,8 @@ class _StatsMonthlyBreakdownMainScreenState
         ),
       ),
       body:
-          _selectedCategoryId == -1
-              ? Center(child: Text('Select a category'))
+          _selectedCategoryId == null
+              ? const Center(child: Text('Select a category'))
               : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
