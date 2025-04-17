@@ -18,7 +18,7 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
     }
 
     return AspectRatio(
-      aspectRatio: 1.7,
+      aspectRatio: 0.8,
       child: Padding(
         padding: const EdgeInsets.only(right: 16),
         child: LineChart(
@@ -72,9 +72,9 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
               LineChartBarData(
                 spots:
                     chartData.asMap().entries.map((entry) {
-                      return FlSpot(entry.key.toDouble(), entry.value.amount);
+                      return FlSpot(entry.key.toDouble(), entry.value.amount.toDouble());
                     }).toList(),
-                isCurved: true,
+                isCurved: false,
                 color:
                     Colors.primaries[Random().nextInt(Colors.primaries.length)],
                 barWidth: 3,

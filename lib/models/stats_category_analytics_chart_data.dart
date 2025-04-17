@@ -1,6 +1,6 @@
 class StatsCategoryAnalyticsChartData {
   final String date;
-  final double amount;
+  final num amount;
 
   StatsCategoryAnalyticsChartData({required this.date, required this.amount});
 
