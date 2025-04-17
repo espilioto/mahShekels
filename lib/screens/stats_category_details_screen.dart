@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/statement_category_model.dart';
 import '../models/stats_category_analytics_chart_data.dart';
 import '../providers/chart_data_provider.dart';
 import '../providers/statement_provider.dart';

@@ -38,7 +38,9 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
                     if (value.toInt() < chartData.length) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(chartData[value.toInt()].date),
+                        child: Transform.rotate(
+                          angle: -45,
+                          child: Text(chartData[value.toInt()].date, style: const TextStyle(fontSize: 10),)),
                       );
                     }
                     return const Text('');
