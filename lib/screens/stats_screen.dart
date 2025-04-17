@@ -15,7 +15,7 @@ class StatsScreen extends StatefulWidget {
 
 class _StatsScreenState extends State<StatsScreen> {
   bool _ignoreInitsAndTransfers = true; // Default value set to true
-  bool _ignoreLoans = false; // Default value for ignore loans is false
+  bool _ignoreLoans = true; // Default value for ignore loans is false
 
   @override
   Widget build(BuildContext context) {
