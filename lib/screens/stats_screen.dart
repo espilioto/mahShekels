@@ -64,7 +64,7 @@ class _StatsScreenState extends State<StatsScreen> {
         children: [
           _buildStatsCard(
             context,
-            icon: Icon(Icons.calendar_month, color: Colors.green, size: 32,),
+            icon: Icon(Icons.calendar_month, color: Colors.blueAccent, size: 32,),
             title: 'Monthly Breakdown',
             subtitle: 'View income & expenses by month',
             destination: StatsMonthlyBreakdownMainScreen(

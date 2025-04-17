@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:mahshekels/utils/extensions.dart';
 
+import '../utils/extensions.dart';
+import '../models/generic_chart_data_model.dart';
 import 'donut_chart_indicator.dart';
-import '../models/stats_breakdown_data_for_month_model.dart';
 
 class MonthlyBreakdownDonutChart extends StatelessWidget {
-  final List<StatsMonthlyBreakdownForMonthDonutData> data;
+  final List<GenericChartDataModel> data;
 
   const MonthlyBreakdownDonutChart({super.key, required this.data});
 
@@ -38,7 +38,7 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
   }
 
   Column createLegend(
-    List<StatsMonthlyBreakdownForMonthDonutData> donutSectionData,
+    List<GenericChartDataModel> donutSectionData,
   ) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -48,9 +48,9 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
             return Indicator(
               color: List<Color>.from(Colors.primaries)[sectionData.key],
               text:
-                  sectionData.value.title.length > 25
-                      ? sectionData.value.title.truncateWithEllipsis(15)
-                      : sectionData.value.title,
+                  sectionData.value.key.length > 25
+                      ? sectionData.value.key.truncateWithEllipsis(15)
+                      : sectionData.value.key,
               isSquare: true,
             );
           }).toList(),
@@ -58,7 +58,7 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
   }
 
   List<PieChartSectionData> createDonutSections(
-    List<StatsMonthlyBreakdownForMonthDonutData> donutSectionData,
+    List<GenericChartDataModel> donutSectionData,
   ) {
     final totalExpenses = donutSectionData.fold(
       0.0,

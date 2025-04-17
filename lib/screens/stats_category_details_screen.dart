@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/stats_category_analytics_chart_data.dart';
+import '../models/generic_chart_data_model.dart';
 import '../providers/chart_data_provider.dart';
 import '../providers/statement_provider.dart';
 import '../widgets/stats_category_analytics_chart.dart';
@@ -17,7 +17,7 @@ class StatsCategoryDetailsScreen extends StatefulWidget {
 class _StatsMonthlyBreakdownMainScreenState
     extends State<StatsCategoryDetailsScreen> {
   int? _selectedCategoryId; // Track the selected category object
-  late Future<List<StatsCategoryAnalyticsChartData>?> _chartDataFuture;
+  late Future<List<GenericChartDataModel>?> _chartDataFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _StatsMonthlyBreakdownMainScreenState
               : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: FutureBuilder<List<StatsCategoryAnalyticsChartData>?>(
+                  child: FutureBuilder<List<GenericChartDataModel>?>(
                     future: _chartDataFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

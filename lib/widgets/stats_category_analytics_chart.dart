@@ -4,10 +4,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-import '../models/stats_category_analytics_chart_data.dart';
+import '../models/generic_chart_data_model.dart';
+
 
 class StatsCategoryAnalyticsChart extends StatelessWidget {
-  final List<StatsCategoryAnalyticsChartData> chartData;
+  final List<GenericChartDataModel> chartData;
 
   const StatsCategoryAnalyticsChart({super.key, required this.chartData});
 
@@ -26,7 +27,7 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
             minX: 0,
             maxX: (chartData.length - 1).toDouble(),
             minY: 0,
-            maxY: chartData.map((e) => e.amount).reduce(math.max) * 1.1,
+            maxY: chartData.map((e) => e.value).reduce(math.max) * 1.1,
             gridData: const FlGridData(show: true),
             titlesData: FlTitlesData(
               rightTitles: const AxisTitles(),
@@ -41,7 +42,7 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
                         child: Transform.rotate(
                           angle: -45,
                           child: Text(
-                            chartData[value.toInt()].date,
+                            chartData[value.toInt()].key,
                             style: const TextStyle(fontSize: 10),
                           ),
                         ),
@@ -67,7 +68,7 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
                   return touchedSpots.map((spot) {
                     final data = chartData[spot.x.toInt()];
                     return LineTooltipItem(
-                      '${data.date}\n${data.amount.toStringAsFixed(2)}€',
+                      '${data.key}\n${data.value.toStringAsFixed(2)}€',
                       const TextStyle(color: Colors.white),
                     );
                   }).toList();
@@ -80,7 +81,7 @@ class StatsCategoryAnalyticsChart extends StatelessWidget {
                     chartData.asMap().entries.map((entry) {
                       return FlSpot(
                         entry.key.toDouble(),
-                        entry.value.amount.toDouble(),
+                        entry.value.value.toDouble(),
                       );
                     }).toList(),
                 isCurved: false,

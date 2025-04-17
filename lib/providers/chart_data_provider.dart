@@ -4,20 +4,19 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/stats_breakdown_data_for_month_model.dart';
-import '../models/overview_balance_chart_data_model.dart';
-import '../models/stats_category_analytics_chart_data.dart';
+import '../models/generic_chart_data_model.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
 
 class ChartDataProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
 
-  List<OverviewBalanceChartData> _overviewBalanceChartData = [];
+  List<GenericChartDataModel> _overviewBalanceChartData = [];
   List<StatsMonthlyBreakdownData> _monthlyBreakdownData = [];
 
   bool _isLoading = false;
   String _errorMessage = '';
 
-  List<OverviewBalanceChartData> get overviewBalanceChartData =>
+  List<GenericChartDataModel> get overviewBalanceChartData =>
       _overviewBalanceChartData;
   List<StatsMonthlyBreakdownData> get monthlyBreakdownData =>
       _monthlyBreakdownData;
@@ -25,7 +24,7 @@ class ChartDataProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  Future<List<StatsCategoryAnalyticsChartData>?>
+  Future<List<GenericChartDataModel>?>
   fetchCategoryAnalyticsChartData(int categoryId) async {
     _isLoading = true;
     // Schedule the notification for the next frame instead of immediate
@@ -42,8 +41,8 @@ class ChartDataProvider with ChangeNotifier {
         final List<dynamic> data = json.decode(response.body);
         final result =
             data
-                .map<StatsCategoryAnalyticsChartData>(
-                  (json) => StatsCategoryAnalyticsChartData.fromJson(json),
+                .map<GenericChartDataModel>(
+                  (json) => GenericChartDataModel.fromJson(json),
                 )
                 .toList();
         _errorMessage = '';
@@ -146,7 +145,7 @@ class ChartDataProvider with ChangeNotifier {
         final data = json.decode(response.body) as List;
         _overviewBalanceChartData =
             data
-                .map((json) => OverviewBalanceChartData.fromJson(json))
+                .map((json) => GenericChartDataModel.fromJson(json))
                 .toList();
         _errorMessage = '';
       } else {

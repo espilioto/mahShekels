@@ -1,8 +1,9 @@
 import '../models/statement_model.dart';
+import 'generic_chart_data_model.dart';
 
 class StatsBreakdownForMonthData {
   final String title;
-  final List<StatsMonthlyBreakdownForMonthDonutData> donutData;
+  final List<GenericChartDataModel> donutData;
   final List<Statement> incomeStatements;
   final List<Statement> expenseStatements;
   final num totalIncome;
@@ -25,7 +26,7 @@ class StatsBreakdownForMonthData {
       donutData:
           (json['donutData'] as List)
               .map(
-                (item) => StatsMonthlyBreakdownForMonthDonutData.fromJson(item),
+                (item) => GenericChartDataModel.fromJson(item),
               )
               .toList(),
       incomeStatements:
@@ -39,25 +40,6 @@ class StatsBreakdownForMonthData {
       totalIncome: json['totalIncome'],
       totalExpenses: json['totalExpenses'],
       balance: json['balance'],
-    );
-  }
-}
-
-class StatsMonthlyBreakdownForMonthDonutData {
-  final String title;
-  final num value;
-
-  StatsMonthlyBreakdownForMonthDonutData({
-    required this.title,
-    required this.value,
-  });
-
-  factory StatsMonthlyBreakdownForMonthDonutData.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    return StatsMonthlyBreakdownForMonthDonutData(
-      title: json['title'],
-      value: json['value'],
     );
   }
 }

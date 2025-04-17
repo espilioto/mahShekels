@@ -2,10 +2,10 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-import '../models/overview_balance_chart_data_model.dart';
+import '../models/generic_chart_data_model.dart';
 
 class OverviewBalanceLineChart extends StatelessWidget {
-  final List<OverviewBalanceChartData> chartData;
+  final List<GenericChartDataModel> chartData;
 
   const OverviewBalanceLineChart({super.key, required this.chartData});
 
@@ -29,7 +29,7 @@ class OverviewBalanceLineChart extends StatelessWidget {
               return touchedSpots.map((spot) {
                 final monthBalance = chartData[spot.x.toInt()];
                 return LineTooltipItem(
-                  '${monthBalance.date}\n${spot.y.toStringAsFixed(0)}€',
+                  '${monthBalance.key}\n${spot.y.toStringAsFixed(0)}€',
                   const TextStyle(color: Colors.white),
                 );
               }).toList();
@@ -41,7 +41,7 @@ class OverviewBalanceLineChart extends StatelessWidget {
           LineChartBarData(
             spots:
                 chartData.asMap().entries.map((entry) {
-                  return FlSpot(entry.key.toDouble(), entry.value.balance);
+                  return FlSpot(entry.key.toDouble(), entry.value.value.toDouble());
                 }).toList(),
             isCurved: false,
             color:
