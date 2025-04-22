@@ -41,7 +41,10 @@ class OverviewBalanceLineChart extends StatelessWidget {
           LineChartBarData(
             spots:
                 chartData.asMap().entries.map((entry) {
-                  return FlSpot(entry.key.toDouble(), entry.value.value.toDouble());
+                  return FlSpot(
+                    entry.key.toDouble(),
+                    entry.value.value.toDouble(),
+                  );
                 }).toList(),
             isCurved: false,
             color:

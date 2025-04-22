@@ -25,9 +25,7 @@ class StatsBreakdownForMonthData {
       title: json['title'],
       donutData:
           (json['donutData'] as List)
-              .map(
-                (item) => GenericChartDataModel.fromJson(item),
-              )
+              .map((item) => GenericChartDataModel.fromJson(item))
               .toList(),
       incomeStatements:
           (json['incomeStatements'] as List)

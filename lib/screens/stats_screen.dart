@@ -64,7 +64,11 @@ class _StatsScreenState extends State<StatsScreen> {
         children: [
           _buildStatsCard(
             context,
-            icon: Icon(Icons.calendar_month, color: Colors.blueAccent, size: 32,),
+            icon: Icon(
+              Icons.calendar_month,
+              color: Colors.blueAccent,
+              size: 32,
+            ),
             title: 'Monthly Breakdown',
             subtitle: 'View income & expenses by month',
             destination: StatsMonthlyBreakdownMainScreen(
@@ -74,14 +78,21 @@ class _StatsScreenState extends State<StatsScreen> {
           ),
           _buildStatsCard(
             context,
-            icon: Icon(Icons.monitor_heart, color: Colors.red, size: 32,),
+            icon: Icon(Icons.monitor_heart, color: Colors.red, size: 32),
             title: 'Jew Pulse',
             subtitle: 'Visualize your savings rate',
-            destination: StatsWealthPulseScreen(),
+            destination: StatsWealthPulseScreen(
+              ignoreInitsAndTransfers: _ignoreInitsAndTransfers,
+              ignoreLoans: _ignoreLoans,
+            ),
           ),
           _buildStatsCard(
             context,
-            icon: Icon(Icons.donut_large_rounded, color: Colors.amber, size: 32,),
+            icon: Icon(
+              Icons.donut_large_rounded,
+              color: Colors.amber,
+              size: 32,
+            ),
             title: 'Category Details',
             subtitle: 'Drill down into spending categories',
             destination: StatsCategoryDetailsScreen(),

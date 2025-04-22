@@ -5,9 +5,6 @@ class GenericChartDataModel {
   GenericChartDataModel({required this.key, required this.value});
 
   factory GenericChartDataModel.fromJson(Map<String, dynamic> json) {
-    return GenericChartDataModel(
-      key: json['key'],
-      value: json['value'],
-    );
+    return GenericChartDataModel(key: json['key'], value: json['value']);
   }
 }

@@ -37,9 +37,7 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
     );
   }
 
-  Column createLegend(
-    List<GenericChartDataModel> donutSectionData,
-  ) {
+  Column createLegend(List<GenericChartDataModel> donutSectionData) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
