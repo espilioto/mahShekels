@@ -6,12 +6,14 @@ import 'dart:convert';
 import '../models/stats_breakdown_data_for_month_model.dart';
 import '../models/generic_chart_data_model.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
+import '../models/stats_savings_chart_data.dart';
 
 class ChartDataProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
 
   List<GenericChartDataModel> _overviewBalanceChartData = [];
   List<StatsMonthlyBreakdownData> _monthlyBreakdownData = [];
+  StatsSavingsChartDataModel? _savingsChartData;
 
   bool _isLoading = false;
   String _errorMessage = '';
@@ -20,12 +22,14 @@ class ChartDataProvider with ChangeNotifier {
       _overviewBalanceChartData;
   List<StatsMonthlyBreakdownData> get monthlyBreakdownData =>
       _monthlyBreakdownData;
+  StatsSavingsChartDataModel? get savingsChartData => _savingsChartData;
 
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  Future<List<GenericChartDataModel>?>
-  fetchCategoryAnalyticsChartData(int categoryId) async {
+  Future<List<GenericChartDataModel>?> fetchCategoryAnalyticsChartData(
+    int categoryId,
+  ) async {
     _isLoading = true;
     // Schedule the notification for the next frame instead of immediate
     Future.microtask(() => notifyListeners());
@@ -144,15 +148,43 @@ class ChartDataProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
         _overviewBalanceChartData =
-            data
-                .map((json) => GenericChartDataModel.fromJson(json))
-                .toList();
+            data.map((json) => GenericChartDataModel.fromJson(json)).toList();
         _errorMessage = '';
       } else {
         _errorMessage = 'Failed to load chart data: ${response.statusCode}';
       }
     } catch (e) {
       _errorMessage = 'Error fetching chart data: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchSavingsChartData(
+    bool ignoreInitsAndTransfers,
+    bool ignoreLoans,
+  ) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '$apiUrl/api/Charts/GetSavingsRateChartData?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        _savingsChartData = StatsSavingsChartDataModel.fromJson(data);
+        _errorMessage = '';
+      } else {
+        _errorMessage =
+            'Failed to load savings chart data: ${response.statusCode}';
+      }
+    } catch (e) {
+      _errorMessage = 'Error fetching savings chart data: $e';
     } finally {
       _isLoading = false;
       notifyListeners();

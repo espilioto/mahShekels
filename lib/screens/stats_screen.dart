@@ -79,9 +79,9 @@ class _StatsScreenState extends State<StatsScreen> {
           _buildStatsCard(
             context,
             icon: Icon(Icons.monitor_heart, color: Colors.red, size: 32),
-            title: 'Jew Pulse',
+            title: 'Jew Chart',
             subtitle: 'Visualize your savings rate',
-            destination: StatsWealthPulseScreen(
+            destination: StatsSavingsScreen(
               ignoreInitsAndTransfers: _ignoreInitsAndTransfers,
               ignoreLoans: _ignoreLoans,
             ),
