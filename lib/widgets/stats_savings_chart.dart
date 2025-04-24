@@ -135,7 +135,7 @@ class StatsSavingsChart extends StatelessWidget {
         1.2); // Add 20% padding
   }
 
-  List<FlSpot> _convertToFlSpots(List<GenericChartDataModel> data) {
+  List<FlSpot> _convertToFlSpots(List<GenericKeyValueModel> data) {
     return data.asMap().entries.map((entry) {
       return FlSpot(entry.key.toDouble(), entry.value.value.toDouble());
     }).toList();

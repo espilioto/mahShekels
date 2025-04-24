@@ -5,20 +5,21 @@ import 'dart:convert';
 
 import '../models/stats_breakdown_data_for_month_model.dart';
 import '../models/generic_chart_data_model.dart';
+import '../models/stats_category_details_data_model.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
 import '../models/stats_savings_data_model.dart';
 
 class ChartDataProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
 
-  List<GenericChartDataModel> _overviewBalanceChartData = [];
+  List<GenericKeyValueModel> _overviewBalanceChartData = [];
   List<StatsMonthlyBreakdownData> _monthlyBreakdownData = [];
   StatsSavingsDataModel? _savingsChartData;
 
   bool _isLoading = false;
   String _errorMessage = '';
 
-  List<GenericChartDataModel> get overviewBalanceChartData =>
+  List<GenericKeyValueModel> get overviewBalanceChartData =>
       _overviewBalanceChartData;
   List<StatsMonthlyBreakdownData> get monthlyBreakdownData =>
       _monthlyBreakdownData;
@@ -27,7 +28,7 @@ class ChartDataProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  Future<List<GenericChartDataModel>?> fetchCategoryAnalyticsChartData(
+  Future<StatsCategoryDetailsDataModel?> fetchCategoryAnalyticsChartData(
     int categoryId,
   ) async {
     _isLoading = true;
@@ -42,13 +43,8 @@ class ChartDataProvider with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
-        final result =
-            data
-                .map<GenericChartDataModel>(
-                  (json) => GenericChartDataModel.fromJson(json),
-                )
-                .toList();
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        var result = StatsCategoryDetailsDataModel.fromJson(data);
         _errorMessage = '';
         return result;
       } else {
@@ -148,7 +144,7 @@ class ChartDataProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
         _overviewBalanceChartData =
-            data.map((json) => GenericChartDataModel.fromJson(json)).toList();
+            data.map((json) => GenericKeyValueModel.fromJson(json)).toList();
         _errorMessage = '';
       } else {
         _errorMessage = 'Failed to load chart data: ${response.statusCode}';

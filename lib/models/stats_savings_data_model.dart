@@ -5,9 +5,9 @@ import '../models/generic_chart_data_model.dart';
 
 class StatsSavingsDataModel {
   final List<StatsSavingsYearAverageModel> yearAverage;
-  final List<GenericChartDataModel> incomeChart;
-  final List<GenericChartDataModel> expensesChart;
-  final List<GenericChartDataModel> savingsChart;
+  final List<GenericKeyValueModel> incomeChart;
+  final List<GenericKeyValueModel> expensesChart;
+  final List<GenericKeyValueModel> savingsChart;
 
   StatsSavingsDataModel({
     required this.yearAverage,
@@ -24,15 +24,15 @@ class StatsSavingsDataModel {
               .toList(),
       incomeChart:
           (json['incomeChart'] as List)
-              .map((item) => GenericChartDataModel.fromJson(item))
+              .map((item) => GenericKeyValueModel.fromJson(item))
               .toList(),
       expensesChart:
           (json['expensesChart'] as List)
-              .map((item) => GenericChartDataModel.fromJson(item))
+              .map((item) => GenericKeyValueModel.fromJson(item))
               .toList(),
       savingsChart:
           (json['savingsChart'] as List)
-              .map((item) => GenericChartDataModel.fromJson(item))
+              .map((item) => GenericKeyValueModel.fromJson(item))
               .toList(),
     );
   }

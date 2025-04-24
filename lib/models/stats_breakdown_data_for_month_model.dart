@@ -3,7 +3,7 @@ import 'generic_chart_data_model.dart';
 
 class StatsBreakdownForMonthData {
   final String title;
-  final List<GenericChartDataModel> donutData;
+  final List<GenericKeyValueModel> donutData;
   final List<Statement> incomeStatements;
   final List<Statement> expenseStatements;
   final num totalIncome;
@@ -25,7 +25,7 @@ class StatsBreakdownForMonthData {
       title: json['title'],
       donutData:
           (json['donutData'] as List)
-              .map((item) => GenericChartDataModel.fromJson(item))
+              .map((item) => GenericKeyValueModel.fromJson(item))
               .toList(),
       incomeStatements:
           (json['incomeStatements'] as List)

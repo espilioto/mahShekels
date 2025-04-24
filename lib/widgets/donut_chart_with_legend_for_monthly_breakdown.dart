@@ -6,7 +6,7 @@ import '../models/generic_chart_data_model.dart';
 import 'donut_chart_indicator.dart';
 
 class MonthlyBreakdownDonutChart extends StatelessWidget {
-  final List<GenericChartDataModel> data;
+  final List<GenericKeyValueModel> data;
 
   const MonthlyBreakdownDonutChart({super.key, required this.data});
 
@@ -37,7 +37,7 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
     );
   }
 
-  Column createLegend(List<GenericChartDataModel> donutSectionData) {
+  Column createLegend(List<GenericKeyValueModel> donutSectionData) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +56,7 @@ class MonthlyBreakdownDonutChart extends StatelessWidget {
   }
 
   List<PieChartSectionData> createDonutSections(
-    List<GenericChartDataModel> donutSectionData,
+    List<GenericKeyValueModel> donutSectionData,
   ) {
     final totalExpenses = donutSectionData.fold(
       0.0,
