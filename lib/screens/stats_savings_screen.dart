@@ -67,7 +67,7 @@ class _StatsMonthlyBreakdownMainScreenState extends State<StatsSavingsScreen> {
           }
           return Column(
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 75),
               _buildChart(provider.savingsChartData!),
               const SizedBox(height: 20),
               const Divider(),
