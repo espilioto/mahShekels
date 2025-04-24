@@ -79,7 +79,7 @@ class _StatsMonthlyBreakdownMainScreenState
                         return Center(child: Text('Error: ${snapshot.error}'));
                       }
 
-                      if (snapshot.data == null || snapshot.data!.yearAverages.isEmpty) {
+                      if (snapshot.data == null || snapshot.data!.yearSums.isEmpty) {
                         return const Center(child: Text('No data available'));
                       }
 
@@ -89,7 +89,7 @@ class _StatsMonthlyBreakdownMainScreenState
                             chartData: snapshot.data!.chartData,
                           ),
                           SizedBox(height: 30),
-                          _buildAveragesDataTable(snapshot.data!.yearAverages)
+                          _buildAveragesDataTable(snapshot.data!.yearSums)
                         ],
                       );
                     },
@@ -102,7 +102,7 @@ class _StatsMonthlyBreakdownMainScreenState
   _buildAveragesDataTable(List<GenericKeyValueModel> data) {
     return Column(
       children: [
-        Text('Yearly averages', style: Theme.of(context).textTheme.titleLarge),
+        Text('Yearly sums', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 20),
         DataTable(
           columnSpacing: 0,
@@ -126,20 +126,20 @@ class _StatsMonthlyBreakdownMainScreenState
             ),
           ],
           rows:
-              data.map((yearAverage) {
+              data.map((yearSum) {
                 return DataRow(
                   cells: [
                     DataCell(
                       SizedBox(
                         width: 65,
-                        child: Text(yearAverage.key, textAlign: TextAlign.center),
+                        child: Text(yearSum.key, textAlign: TextAlign.center),
                       ),
                     ),
                     DataCell(
                       SizedBox(
                         width: 85,
                         child: Text(
-                          '${yearAverage.value.toStringAsFixed(0)}€',
+                          '${yearSum.value.toStringAsFixed(0)}€',
                           textAlign: TextAlign.center,
                         ),
                       ),
