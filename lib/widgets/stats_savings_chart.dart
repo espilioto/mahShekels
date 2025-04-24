@@ -174,21 +174,19 @@ class StatsSavingsChart extends StatelessWidget {
   }
 
   SideTitles _getRightTitles() {
-        return SideTitles(
+    return SideTitles(
       showTitles: true,
       interval: _calculateMaxY() / 5,
       getTitlesWidget: (value, meta) {
         final yValue = value / 1000;
-        final formattedValue = yValue % 1 == 0
-            ? '${yValue.toInt()}k'
-            : '${yValue.toStringAsFixed(1)}k';
-        
+        final formattedValue =
+            yValue % 1 == 0
+                ? '${yValue.toInt()}k'
+                : '${yValue.toStringAsFixed(1)}k';
+
         return Text(
           formattedValue,
-          style: const TextStyle(
-            fontSize: 10,
-            color: Colors.grey,
-          ),
+          style: const TextStyle(fontSize: 10, color: Colors.grey),
         );
       },
     );
