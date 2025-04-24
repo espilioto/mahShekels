@@ -200,6 +200,11 @@ class _StatsMonthlyBreakdownDetailScreenState
                 fontWeight: FontWeight.bold,
               ),
             ),
+            Text(
+              statement.account.name.breakOnSpace(),
+              maxLines: 2,
+              overflow: TextOverflow.fade,
+            ),
           ],
         ),
       ),
