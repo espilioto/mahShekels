@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
 import '../models/generic_chart_data_model.dart';
 import '../models/stats_savings_data_model.dart';
@@ -24,8 +25,10 @@ class StatsSavingsChart extends StatelessWidget {
           gridData: const FlGridData(show: true),
           titlesData: FlTitlesData(
             show: true,
+            topTitles: AxisTitles(),
+            rightTitles: AxisTitles(sideTitles: _getRightTitles()),
             bottomTitles: AxisTitles(sideTitles: _getBottomTitles()),
-            leftTitles: AxisTitles(sideTitles: _getLeftTitles()),
+            leftTitles: AxisTitles(),
           ),
           borderData: FlBorderData(
             show: true,
@@ -141,21 +144,36 @@ class StatsSavingsChart extends StatelessWidget {
   SideTitles _getBottomTitles() {
     return SideTitles(
       showTitles: true,
-      interval: 1,
+      interval: 1, // Still check every entry but only show January labels
       getTitlesWidget: (value, meta) {
         final index = value.toInt();
         if (index >= 0 && index < chartData.incomeChart.length) {
-          return Text(
-            chartData.incomeChart[index].key,
-            style: const TextStyle(fontSize: 10),
-          );
+          final key = chartData.incomeChart[index].key;
+
+          try {
+            // Parse the date assuming format is "MM/yyyy"
+            final date = DateFormat('MM/yy').parse(key);
+            if (date.month == 1) {
+              // Show label only for January
+              return Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  DateFormat('yyyy').format(date),
+                  style: const TextStyle(fontSize: 10, color: Colors.grey),
+                ),
+              );
+            }
+          } catch (e) {
+            // Handle invalid date format
+            return const Text('');
+          }
         }
         return const Text('');
       },
     );
   }
 
-  SideTitles _getLeftTitles() {
+  SideTitles _getRightTitles() {
     return SideTitles(
       showTitles: true,
       interval: _calculateMaxY() / 5, // Show ~5 labels on Y axis

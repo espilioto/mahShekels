@@ -66,25 +66,26 @@ class _StatsMonthlyBreakdownMainScreenState extends State<StatsSavingsScreen> {
             }
           }
           return Column(
-          children: [
-            const SizedBox(height: 30),
-            _buildChart(provider.savingsChartData!),
-            const SizedBox(height: 20),
-            const Divider(),
-            const SizedBox(height: 20),
-            Expanded( // Add Expanded here
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: _buildAveragesDataTable(provider.savingsChartData!),
+            children: [
+              const SizedBox(height: 30),
+              _buildChart(provider.savingsChartData!),
+              const SizedBox(height: 20),
+              const Divider(),
+              const SizedBox(height: 20),
+              Expanded(
+                // Add Expanded here
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: _buildAveragesDataTable(provider.savingsChartData!),
+                ),
               ),
-            ),
-            const SizedBox(height: 30),
-          ],
-        );
-      },
-    ),
-  );
-}
+              const SizedBox(height: 30),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
   _buildChart(StatsSavingsDataModel chartData) {
     return Column(
