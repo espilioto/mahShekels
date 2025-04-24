@@ -6,14 +6,14 @@ import 'dart:convert';
 import '../models/stats_breakdown_data_for_month_model.dart';
 import '../models/generic_chart_data_model.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
-import '../models/stats_savings_chart_data.dart';
+import '../models/stats_savings_data_model.dart';
 
 class ChartDataProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
 
   List<GenericChartDataModel> _overviewBalanceChartData = [];
   List<StatsMonthlyBreakdownData> _monthlyBreakdownData = [];
-  StatsSavingsChartDataModel? _savingsChartData;
+  StatsSavingsDataModel? _savingsChartData;
 
   bool _isLoading = false;
   String _errorMessage = '';
@@ -22,7 +22,7 @@ class ChartDataProvider with ChangeNotifier {
       _overviewBalanceChartData;
   List<StatsMonthlyBreakdownData> get monthlyBreakdownData =>
       _monthlyBreakdownData;
-  StatsSavingsChartDataModel? get savingsChartData => _savingsChartData;
+  StatsSavingsDataModel? get savingsChartData => _savingsChartData;
 
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
@@ -166,7 +166,7 @@ class ChartDataProvider with ChangeNotifier {
     bool ignoreLoans,
   ) async {
     _isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
 
     try {
       final response = await http.get(
@@ -177,7 +177,7 @@ class ChartDataProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as Map<String, dynamic>;
-        _savingsChartData = StatsSavingsChartDataModel.fromJson(data);
+        _savingsChartData = StatsSavingsDataModel.fromJson(data);
         _errorMessage = '';
       } else {
         _errorMessage =
@@ -187,7 +187,7 @@ class ChartDataProvider with ChangeNotifier {
       _errorMessage = 'Error fetching savings chart data: $e';
     } finally {
       _isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
     }
   }
 }

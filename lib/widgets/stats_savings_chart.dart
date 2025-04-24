@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../models/generic_chart_data_model.dart';
-import '../models/stats_savings_chart_data.dart';
+import '../models/stats_savings_data_model.dart';
 
 class StatsSavingsChart extends StatelessWidget {
-  final StatsSavingsChartDataModel chartData;
+  final StatsSavingsDataModel chartData;
 
   const StatsSavingsChart({super.key, required this.chartData});
 
@@ -35,13 +35,63 @@ class StatsSavingsChart extends StatelessWidget {
           maxX: chartData.incomeChart.length.toDouble() - 1,
           minY: 0,
           maxY: _calculateMaxY(),
+          lineTouchData: LineTouchData(
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                if (touchedSpots.isEmpty) return [];
+
+                // Get data from the first valid spot
+                final spot = touchedSpots.first;
+                final xIndex = spot.x.toInt();
+                final date = chartData.incomeChart[xIndex].key;
+                final incomeValue = chartData.incomeChart[xIndex].value;
+                final expensesValue = chartData.expensesChart[xIndex].value;
+                final savingsValue = chartData.savingsChart[xIndex].value;
+
+                // Create just ONE tooltip item but return it for all spots
+                return touchedSpots.asMap().entries.map((entry) {
+                  final index = entry.key;
+
+                  // Only show content for the first entry
+                  if (index == 0) {
+                    return LineTooltipItem(
+                      '',
+                      const TextStyle(color: Colors.white),
+                      children: [
+                        TextSpan(
+                          text: '$date\n',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: 'Income: $incomeValue€\n',
+                          style: const TextStyle(color: Colors.green),
+                        ),
+                        TextSpan(
+                          text: 'Expenses: $expensesValue€\n',
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        TextSpan(
+                          text: 'Savings: $savingsValue€',
+                          style: const TextStyle(color: Colors.blue),
+                        ),
+                      ],
+                    );
+                  } else {
+                    // Return empty tooltip for other entries
+                    return null;
+                  }
+                }).toList();
+              },
+            ),
+            handleBuiltInTouches: true,
+          ),
           lineBarsData: [
             // Income line
             LineChartBarData(
               spots: _convertToFlSpots(chartData.incomeChart),
               isCurved: true,
               color: Colors.green,
-              barWidth: 4,
+              barWidth: 2,
               isStrokeCapRound: true,
               dotData: const FlDotData(show: false),
               belowBarData: BarAreaData(show: false),
@@ -51,7 +101,7 @@ class StatsSavingsChart extends StatelessWidget {
               spots: _convertToFlSpots(chartData.expensesChart),
               isCurved: true,
               color: Colors.red,
-              barWidth: 4,
+              barWidth: 2,
               isStrokeCapRound: true,
               dotData: const FlDotData(show: false),
               belowBarData: BarAreaData(show: false),
@@ -61,7 +111,7 @@ class StatsSavingsChart extends StatelessWidget {
               spots: _convertToFlSpots(chartData.savingsChart),
               isCurved: true,
               color: Colors.blue,
-              barWidth: 4,
+              barWidth: 2,
               isStrokeCapRound: true,
               dotData: const FlDotData(show: false),
               belowBarData: BarAreaData(show: false),

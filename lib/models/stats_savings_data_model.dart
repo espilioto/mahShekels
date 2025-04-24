@@ -1,20 +1,27 @@
 import 'dart:core';
 
+import '../models/stats_savings_year_average_model.dart';
 import '../models/generic_chart_data_model.dart';
 
-class StatsSavingsChartDataModel {
+class StatsSavingsDataModel {
+  final List<StatsSavingsYearAverageModel> yearAverage;
   final List<GenericChartDataModel> incomeChart;
   final List<GenericChartDataModel> expensesChart;
   final List<GenericChartDataModel> savingsChart;
 
-  StatsSavingsChartDataModel({
+  StatsSavingsDataModel({
+    required this.yearAverage,
     required this.incomeChart,
     required this.expensesChart,
     required this.savingsChart,
   });
 
-  factory StatsSavingsChartDataModel.fromJson(Map<String, dynamic> json) {
-    return StatsSavingsChartDataModel(
+  factory StatsSavingsDataModel.fromJson(Map<String, dynamic> json) {
+    return StatsSavingsDataModel(
+      yearAverage:
+          (json['averagesPerYear'] as List)
+              .map((item) => StatsSavingsYearAverageModel.fromJson(item))
+              .toList(),
       incomeChart:
           (json['incomeChart'] as List)
               .map((item) => GenericChartDataModel.fromJson(item))

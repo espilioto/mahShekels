@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/chart_data_provider.dart';
 import 'stats_monthly_breakdown_main_screen.dart';
 import 'stats_category_details_screen.dart';
-import 'stats_wealth_pulse_screen.dart';
+import 'stats_savings_screen.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
