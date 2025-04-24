@@ -229,18 +229,34 @@ class _StatementFormScreenState extends State<StatementFormActionScreen> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
+  DateTime? pickedDate;
+
+  await showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return Dialog(
+        child: SizedBox(
+          height: 400,
+          child: CalendarDatePicker(
+            initialDate: _selectedDate,
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+            currentDate: DateTime.now(),
+            onDateChanged: (date) {
+              pickedDate = date;
+              Navigator.pop(context); // Close dialog immediately
+            },
+          ),
+        ),
+      );
+    },
+  );
+
+  if (pickedDate != null && pickedDate != _selectedDate) {
+    setState(() => _selectedDate = pickedDate!);
   }
+}
 
   void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
