@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/generic_chart_data_model.dart';
+import '../models/stats_category_details_data_model.dart';
 import '../providers/chart_data_provider.dart';
 import '../providers/statement_provider.dart';
 import '../widgets/stats_category_analytics_chart.dart';
@@ -17,7 +18,7 @@ class StatsCategoryDetailsScreen extends StatefulWidget {
 class _StatsMonthlyBreakdownMainScreenState
     extends State<StatsCategoryDetailsScreen> {
   int? _selectedCategoryId; // Track the selected category object
-  late Future<List<GenericChartDataModel>?> _chartDataFuture;
+  late Future<StatsCategoryDetailsDataModel?> _screenDataFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class _StatsMonthlyBreakdownMainScreenState
                       _selectedCategoryId = null;
                     }
 
-                    _chartDataFuture = chartDataProvider
+                    _screenDataFuture = chartDataProvider
                         .fetchCategoryAnalyticsChartData(_selectedCategoryId!);
                   });
                 },
@@ -67,8 +68,8 @@ class _StatsMonthlyBreakdownMainScreenState
               : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: FutureBuilder<List<GenericChartDataModel>?>(
-                    future: _chartDataFuture,
+                  child: FutureBuilder<StatsCategoryDetailsDataModel?>(
+                    future: _screenDataFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -78,17 +79,76 @@ class _StatsMonthlyBreakdownMainScreenState
                         return Center(child: Text('Error: ${snapshot.error}'));
                       }
 
-                      if (snapshot.data == null || snapshot.data!.isEmpty) {
+                      if (snapshot.data == null || snapshot.data!.yearAverages.isEmpty) {
                         return const Center(child: Text('No data available'));
                       }
 
-                      return StatsCategoryAnalyticsChart(
-                        chartData: snapshot.data!,
+                      return Column(
+                        children: [
+                          StatsCategoryAnalyticsChart(
+                            chartData: snapshot.data!.chartData,
+                          ),
+                          SizedBox(height: 30),
+                          _buildAveragesDataTable(snapshot.data!.yearAverages)
+                        ],
                       );
                     },
                   ),
                 ),
               ),
+    );
+  }
+
+  _buildAveragesDataTable(List<GenericKeyValueModel> data) {
+    return Column(
+      children: [
+        Text('Yearly averages', style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 20),
+        DataTable(
+          columnSpacing: 0,
+          horizontalMargin: 10,
+          headingRowHeight: 40,
+          columns: [
+            DataColumn(
+              label: Text(
+                'Year',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Amount',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              numeric: true,
+            ),
+          ],
+          rows:
+              data.map((yearAverage) {
+                return DataRow(
+                  cells: [
+                    DataCell(
+                      SizedBox(
+                        width: 65,
+                        child: Text(yearAverage.key, textAlign: TextAlign.center),
+                      ),
+                    ),
+                    DataCell(
+                      SizedBox(
+                        width: 85,
+                        child: Text(
+                          '${yearAverage.value.toStringAsFixed(0)}€',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+        ),
+      ],
     );
   }
 }

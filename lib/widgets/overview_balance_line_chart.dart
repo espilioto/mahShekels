@@ -5,7 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../models/generic_chart_data_model.dart';
 
 class OverviewBalanceLineChart extends StatelessWidget {
-  final List<GenericChartDataModel> chartData;
+  final List<GenericKeyValueModel> chartData;
 
   const OverviewBalanceLineChart({super.key, required this.chartData});
 
