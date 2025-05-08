@@ -27,14 +27,14 @@ class StatsYearlyBreakdownDetailScreen extends StatefulWidget {
 
 class _StatsYearlyBreakdownDetailScreenState
     extends State<StatsYearlyBreakdownDetailScreen> {
-  late Future<StatsBreakdownDetailData?> _monthDataFuture;
+  late Future<StatsBreakdownDetailData?> _yearDataFuture;
   late ChartDataProvider _chartDataProvider;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _chartDataProvider = Provider.of<ChartDataProvider>(context, listen: false);
-    _monthDataFuture = _chartDataProvider.fetchBreakdownDataForYear(
+    _yearDataFuture = _chartDataProvider.fetchBreakdownDataForYear(
       widget.year,
       widget.ignoreInitsAndTransfers,
       widget.ignoreLoans,
@@ -46,7 +46,7 @@ class _StatsYearlyBreakdownDetailScreenState
     return Scaffold(
       appBar: AppBar(title: Text(widget.year.toString())),
       body: FutureBuilder<StatsBreakdownDetailData?>(
-        future: _monthDataFuture,
+        future: _yearDataFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
