@@ -146,7 +146,7 @@ class ChartDataProvider with ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse(
-          '$apiUrl/api/Charts/GetYearlyBreakdownDataAsync?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+          '$apiUrl/api/Charts/GetYearlyBreakdownData?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
       );
 
@@ -181,7 +181,7 @@ class ChartDataProvider with ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse(
-          '$apiUrl/api/Charts/GetBreakdownDataForYearAsync?year=$year&ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+          '$apiUrl/api/Charts/GetBreakdownDataForYear?year=$year&ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
       );
 
@@ -192,11 +192,11 @@ class ChartDataProvider with ChangeNotifier {
         return result;
       } else {
         _errorMessage =
-            'Failed to load monthly breakdown data: ${response.statusCode}';
+            'Failed to load breakdown data for year: ${response.statusCode}';
         return null;
       }
     } catch (e) {
-      _errorMessage = 'Error fetching monthly breakdown data: $e';
+      _errorMessage = 'Error fetching breakdown data for year: $e';
       return null;
     } finally {
       _isLoading = false;
