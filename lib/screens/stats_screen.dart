@@ -5,6 +5,7 @@ import '../providers/chart_data_provider.dart';
 import 'stats_monthly_breakdown_main_screen.dart';
 import 'stats_category_details_screen.dart';
 import 'stats_savings_screen.dart';
+import 'stats_yearly_breakdown_main_screen.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -64,14 +65,24 @@ class _StatsScreenState extends State<StatsScreen> {
         children: [
           _buildStatsCard(
             context,
+            icon: Icon(Icons.event, color: Colors.greenAccent, size: 32),
+            title: 'Monthly Breakdown',
+            subtitle: 'View income & expenses by month',
+            destination: StatsMonthlyBreakdownMainScreen(
+              ignoreInitsAndTransfers: _ignoreInitsAndTransfers,
+              ignoreLoans: _ignoreLoans,
+            ),
+          ),
+          _buildStatsCard(
+            context,
             icon: Icon(
               Icons.calendar_month,
               color: Colors.blueAccent,
               size: 32,
             ),
-            title: 'Monthly Breakdown',
-            subtitle: 'View income & expenses by month',
-            destination: StatsMonthlyBreakdownMainScreen(
+            title: 'Yearly Breakdown',
+            subtitle: 'View income & expenses by year',
+            destination: StatsYearlyBreakdownMainScreen(
               ignoreInitsAndTransfers: _ignoreInitsAndTransfers,
               ignoreLoans: _ignoreLoans,
             ),

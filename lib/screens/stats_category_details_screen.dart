@@ -79,7 +79,8 @@ class _StatsMonthlyBreakdownMainScreenState
                         return Center(child: Text('Error: ${snapshot.error}'));
                       }
 
-                      if (snapshot.data == null || snapshot.data!.yearSums.isEmpty) {
+                      if (snapshot.data == null ||
+                          snapshot.data!.yearSums.isEmpty) {
                         return const Center(child: Text('No data available'));
                       }
 
@@ -89,7 +90,7 @@ class _StatsMonthlyBreakdownMainScreenState
                             chartData: snapshot.data!.chartData,
                           ),
                           SizedBox(height: 30),
-                          _buildAveragesDataTable(snapshot.data!.yearSums)
+                          _buildAveragesDataTable(snapshot.data!.yearSums),
                         ],
                       );
                     },

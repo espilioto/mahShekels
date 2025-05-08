@@ -54,7 +54,8 @@ class MyApp extends StatelessWidget {
               (_) =>
                   ChartDataProvider()
                     ..fetchOverviewBalanceChartData()
-                    ..fetchMonthlyBreakdownData(true, false),
+                    ..fetchMonthlyBreakdownData(true, false)
+                    ..fetchYearlyBreakdownData(true, false)
         ),
       ],
       child: MaterialApp(

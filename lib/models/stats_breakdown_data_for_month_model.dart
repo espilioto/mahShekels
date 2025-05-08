@@ -1,7 +1,7 @@
 import '../models/statement_model.dart';
 import 'generic_chart_data_model.dart';
 
-class StatsBreakdownForMonthData {
+class StatsBreakdownDetailData {
   final String title;
   final List<GenericKeyValueModel> donutData;
   final List<Statement> incomeStatements;
@@ -10,7 +10,7 @@ class StatsBreakdownForMonthData {
   final num totalExpenses;
   final num balance;
 
-  StatsBreakdownForMonthData({
+  StatsBreakdownDetailData({
     required this.title,
     required this.donutData,
     required this.incomeStatements,
@@ -20,8 +20,8 @@ class StatsBreakdownForMonthData {
     required this.balance,
   });
 
-  factory StatsBreakdownForMonthData.fromJson(Map<String, dynamic> json) {
-    return StatsBreakdownForMonthData(
+  factory StatsBreakdownDetailData.fromJson(Map<String, dynamic> json) {
+    return StatsBreakdownDetailData(
       title: json['title'],
       donutData:
           (json['donutData'] as List)

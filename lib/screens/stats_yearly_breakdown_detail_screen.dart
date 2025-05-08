@@ -8,27 +8,25 @@ import '../models/statement_model.dart';
 import '../widgets/donut_chart_with_legend_for_monthly_breakdown.dart';
 import '../utils/extensions.dart';
 
-class StatsMonthlyBreakdownDetailScreen extends StatefulWidget {
-  final int month;
+class StatsYearlyBreakdownDetailScreen extends StatefulWidget {
   final int year;
   final bool ignoreInitsAndTransfers;
   final bool ignoreLoans;
 
-  const StatsMonthlyBreakdownDetailScreen({
+  const StatsYearlyBreakdownDetailScreen({
     super.key,
-    required this.month,
     required this.year,
     required this.ignoreInitsAndTransfers,
     required this.ignoreLoans,
   });
 
   @override
-  State<StatsMonthlyBreakdownDetailScreen> createState() =>
-      _StatsMonthlyBreakdownDetailScreenState();
+  State<StatsYearlyBreakdownDetailScreen> createState() =>
+      _StatsYearlyBreakdownDetailScreenState();
 }
 
-class _StatsMonthlyBreakdownDetailScreenState
-    extends State<StatsMonthlyBreakdownDetailScreen> {
+class _StatsYearlyBreakdownDetailScreenState
+    extends State<StatsYearlyBreakdownDetailScreen> {
   late Future<StatsBreakdownDetailData?> _monthDataFuture;
   late ChartDataProvider _chartDataProvider;
 
@@ -36,8 +34,7 @@ class _StatsMonthlyBreakdownDetailScreenState
   void didChangeDependencies() {
     super.didChangeDependencies();
     _chartDataProvider = Provider.of<ChartDataProvider>(context, listen: false);
-    _monthDataFuture = _chartDataProvider.fetchBreakdownDataForMonth(
-      widget.month,
+    _monthDataFuture = _chartDataProvider.fetchBreakdownDataForYear(
       widget.year,
       widget.ignoreInitsAndTransfers,
       widget.ignoreLoans,
@@ -47,9 +44,7 @@ class _StatsMonthlyBreakdownDetailScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${_getMonthName(widget.month)} ${widget.year}'),
-      ),
+      appBar: AppBar(title: Text(widget.year.toString())),
       body: FutureBuilder<StatsBreakdownDetailData?>(
         future: _monthDataFuture,
         builder: (context, snapshot) {
@@ -209,9 +204,5 @@ class _StatsMonthlyBreakdownDetailScreenState
         ),
       ),
     );
-  }
-
-  String _getMonthName(int month) {
-    return DateFormat('MMMM').format(DateTime(2020, month));
   }
 }

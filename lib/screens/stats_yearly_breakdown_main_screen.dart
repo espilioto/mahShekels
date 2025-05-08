@@ -2,31 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/chart_data_provider.dart';
-import '../widgets/monthly_breakdown_summary_card.dart';
-import 'stats_monthly_breakdown_detail_screen.dart';
+import '../widgets/yearly_breakdown_summary_card.dart';
+import 'stats_yearly_breakdown_detail_screen.dart';
 
-class StatsMonthlyBreakdownMainScreen extends StatefulWidget {
+class StatsYearlyBreakdownMainScreen extends StatefulWidget {
   final bool ignoreInitsAndTransfers;
   final bool ignoreLoans;
 
-  const StatsMonthlyBreakdownMainScreen({
+  const StatsYearlyBreakdownMainScreen({
     super.key,
     required this.ignoreInitsAndTransfers,
     required this.ignoreLoans,
   });
 
   @override
-  State<StatsMonthlyBreakdownMainScreen> createState() =>
-      _StatsMonthlyBreakdownMainScreenState();
+  State<StatsYearlyBreakdownMainScreen> createState() =>
+      _StatsYearlyBreakdownMainScreenState();
 }
 
-class _StatsMonthlyBreakdownMainScreenState
-    extends State<StatsMonthlyBreakdownMainScreen> {
+class _StatsYearlyBreakdownMainScreenState
+    extends State<StatsYearlyBreakdownMainScreen> {
   Future<void> _refreshData() async {
     await Provider.of<ChartDataProvider>(
       context,
       listen: false,
-    ).fetchMonthlyBreakdownData(
+    ).fetchYearlyBreakdownData(
       widget.ignoreInitsAndTransfers,
       widget.ignoreLoans,
     );
@@ -37,13 +37,13 @@ class _StatsMonthlyBreakdownMainScreenState
     final chartDataProvider = context.watch<ChartDataProvider>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Monthly Breakdown')),
+      appBar: AppBar(title: const Text('Yearly Breakdown')),
       body: _buildContent(chartDataProvider),
     );
   }
 
   Widget _buildContent(ChartDataProvider provider) {
-    if (provider.isLoading && provider.monthlyBreakdownData.isEmpty) {
+    if (provider.isLoading && provider.yearlyBreakdownData.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -55,16 +55,15 @@ class _StatsMonthlyBreakdownMainScreenState
 
   Widget _buildListView(ChartDataProvider provider) {
     return ListView.separated(
-      itemCount: provider.monthlyBreakdownData.length,
+      itemCount: provider.yearlyBreakdownData.length,
       separatorBuilder: (context, index) => const Divider(height: 10),
       itemBuilder: (context, index) {
-        final month = provider.monthlyBreakdownData[index];
+        final year = provider.yearlyBreakdownData[index];
         return InkWell(
           onTap:
               () => _navigateToDetailScreen(
                 context,
-                month.month,
-                month.year,
+                year.year,
                 widget.ignoreInitsAndTransfers,
                 widget.ignoreLoans,
               ),
@@ -72,7 +71,7 @@ class _StatsMonthlyBreakdownMainScreenState
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               children: [
-                Expanded(child: MonthlyBreakdownSummaryCard(month: month)),
+                Expanded(child: YearlyBreakdownSummaryCard(year: year)),
                 const Icon(Icons.chevron_right, color: Colors.grey),
               ],
             ),
@@ -84,7 +83,6 @@ class _StatsMonthlyBreakdownMainScreenState
 
   void _navigateToDetailScreen(
     BuildContext context,
-    int month,
     int year,
     bool ignoreInitsAndTransfers,
     bool ignoreLoans,
@@ -93,8 +91,7 @@ class _StatsMonthlyBreakdownMainScreenState
       context,
       MaterialPageRoute(
         builder:
-            (context) => StatsMonthlyBreakdownDetailScreen(
-              month: month,
+            (context) => StatsYearlyBreakdownDetailScreen(
               year: year,
               ignoreInitsAndTransfers: ignoreInitsAndTransfers,
               ignoreLoans: ignoreLoans,

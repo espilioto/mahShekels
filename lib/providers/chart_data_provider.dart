@@ -8,12 +8,14 @@ import '../models/generic_chart_data_model.dart';
 import '../models/stats_category_details_data_model.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
 import '../models/stats_savings_data_model.dart';
+import '../models/stats_yearly_breakdown_data_model.dart';
 
 class ChartDataProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
 
   List<GenericKeyValueModel> _overviewBalanceChartData = [];
   List<StatsMonthlyBreakdownData> _monthlyBreakdownData = [];
+  List<StatsYearlyBreakdownData> _yearlyBreakdownData = [];
   StatsSavingsDataModel? _savingsChartData;
 
   bool _isLoading = false;
@@ -23,6 +25,8 @@ class ChartDataProvider with ChangeNotifier {
       _overviewBalanceChartData;
   List<StatsMonthlyBreakdownData> get monthlyBreakdownData =>
       _monthlyBreakdownData;
+  List<StatsYearlyBreakdownData> get yearlyBreakdownData =>
+      _yearlyBreakdownData;
   StatsSavingsDataModel? get savingsChartData => _savingsChartData;
 
   bool get isLoading => _isLoading;
@@ -62,7 +66,7 @@ class ChartDataProvider with ChangeNotifier {
     }
   }
 
-  Future<StatsBreakdownForMonthData?> fetchMonthlyBreakdownDataForMonth(
+  Future<StatsBreakdownDetailData?> fetchBreakdownDataForMonth(
     int month,
     int year,
     bool ignoreInitsAndTransfers,
@@ -81,7 +85,7 @@ class ChartDataProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final result = StatsBreakdownForMonthData.fromJson(data);
+        final result = StatsBreakdownDetailData.fromJson(data);
         _errorMessage = '';
         return result;
       } else {
@@ -129,6 +133,75 @@ class ChartDataProvider with ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> fetchYearlyBreakdownData(
+    bool ignoreInitsAndTransfers,
+    bool ignoreLoans,
+  ) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '$apiUrl/api/Charts/GetYearlyBreakdownDataAsync?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as List;
+        _yearlyBreakdownData =
+            data
+                .map((json) => StatsYearlyBreakdownData.fromJson(json))
+                .toList();
+        _errorMessage = '';
+      } else {
+        _errorMessage =
+            'Failed to load yearly breakdown data: ${response.statusCode}';
+      }
+    } catch (e) {
+      _errorMessage = 'Error fetching yearly breakdown data: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<StatsBreakdownDetailData?> fetchBreakdownDataForYear(
+    int year,
+    bool ignoreInitsAndTransfers,
+    bool ignoreLoans,
+  ) async {
+    _isLoading = true;
+    // Schedule the notification for the next frame instead of immediate
+    Future.microtask(() => notifyListeners());
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '$apiUrl/api/Charts/GetBreakdownDataForYearAsync?year=$year&ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final result = StatsBreakdownDetailData.fromJson(data);
+        _errorMessage = '';
+        return result;
+      } else {
+        _errorMessage =
+            'Failed to load monthly breakdown data: ${response.statusCode}';
+        return null;
+      }
+    } catch (e) {
+      _errorMessage = 'Error fetching monthly breakdown data: $e';
+      return null;
+    } finally {
+      _isLoading = false;
+      // Again, schedule for next frame
+      Future.microtask(() => notifyListeners());
     }
   }
 

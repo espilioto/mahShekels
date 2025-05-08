@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/stats_monthly_breakdown_data_model.dart';
+import '../models/stats_yearly_breakdown_data_model.dart';
 
-class MonthlyBreakdownSummaryCard extends StatelessWidget {
-  final StatsMonthlyBreakdownData month;
+class YearlyBreakdownSummaryCard extends StatelessWidget {
+  final StatsYearlyBreakdownData year;
   final VoidCallback? onTap;
 
-  const MonthlyBreakdownSummaryCard({
-    super.key,
-    required this.month,
-    this.onTap,
-  });
+  const YearlyBreakdownSummaryCard({super.key, required this.year, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final balanceColor =
-        month.balance == 0
+        year.balance == 0
             ? Colors.white
-            : (month.balance > 0 ? Colors.green : Colors.red);
+            : (year.balance > 0 ? Colors.green : Colors.red);
     final textTheme = Theme.of(context).textTheme;
-    final isPositive = month.balance >= 0;
+    final isPositive = year.balance >= 0;
 
     return Card(
       child: InkWell(
@@ -37,7 +33,7 @@ class MonthlyBreakdownSummaryCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        month.monthYear,
+                        year.year.toString(),
                         style: textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -60,7 +56,7 @@ class MonthlyBreakdownSummaryCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      NumberFormat.currency(symbol: '€').format(month.balance),
+                      NumberFormat.currency(symbol: '€').format(year.balance),
                       style: textTheme.titleMedium?.copyWith(
                         color: balanceColor,
                         fontWeight: FontWeight.bold,
@@ -72,7 +68,7 @@ class MonthlyBreakdownSummaryCard extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              _buildFinancialBar(context, month: month),
+              _buildFinancialBar(context, year: year),
             ],
           ),
         ),
@@ -82,10 +78,10 @@ class MonthlyBreakdownSummaryCard extends StatelessWidget {
 
   Widget _buildFinancialBar(
     BuildContext context, {
-    required StatsMonthlyBreakdownData month,
+    required StatsYearlyBreakdownData year,
   }) {
-    final total = month.income + month.expenses.abs();
-    final value = total == 0 ? 0.5 : (month.income / total);
+    final total = year.income + year.expenses.abs();
+    final value = total == 0 ? 0.5 : (year.income / total);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,17 +90,17 @@ class MonthlyBreakdownSummaryCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              NumberFormat.currency(symbol: '€').format(month.income),
+              NumberFormat.currency(symbol: '€').format(year.income),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
-                color: month.income > 0 ? Colors.green : Colors.red,
+                color: year.income > 0 ? Colors.green : Colors.red,
               ),
             ),
             Text(
-              NumberFormat.currency(symbol: '€').format(month.expenses),
+              NumberFormat.currency(symbol: '€').format(year.expenses),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
-                color: month.expenses > 0 ? Colors.green : Colors.red,
+                color: year.expenses > 0 ? Colors.green : Colors.red,
               ),
             ),
           ],
