@@ -63,8 +63,8 @@ class _StatsYearlyBreakdownDetailScreenState
     );
   }
 
-  Widget _buildDetailContent(StatsBreakdownDetailData monthData) {
-    final sortedDonutData = List.of(monthData.donutData)
+  Widget _buildDetailContent(StatsBreakdownDetailData yearData) {
+    final sortedDonutData = List.of(yearData.donutData)
       ..sort((a, b) => a.value.compareTo(b.value));
 
     return SingleChildScrollView(
@@ -80,19 +80,19 @@ class _StatsYearlyBreakdownDetailScreenState
             children: [
               _buildTotalCard(
                 'Income',
-                monthData.totalIncome,
+                yearData.totalIncome,
                 Colors.green,
                 Theme.of(context).textTheme.bodySmall,
               ),
               _buildTotalCard(
                 'Balance',
-                monthData.balance,
-                monthData.balance >= 0 ? Colors.green : Colors.red,
+                yearData.balance,
+                yearData.balance >= 0 ? Colors.green : Colors.red,
                 Theme.of(context).textTheme.bodyLarge,
               ),
               _buildTotalCard(
                 'Expenses',
-                monthData.totalExpenses,
+                yearData.totalExpenses,
                 Colors.red,
                 Theme.of(context).textTheme.bodySmall,
               ),
@@ -118,7 +118,7 @@ class _StatsYearlyBreakdownDetailScreenState
                       'Income',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    ...monthData.incomeStatements.map(
+                    ...yearData.incomeStatements.map(
                       (statement) => _buildStatementItem(statement, true),
                     ),
                   ],
@@ -133,7 +133,7 @@ class _StatsYearlyBreakdownDetailScreenState
                       'Expenses',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    ...monthData.expenseStatements.map(
+                    ...yearData.expenseStatements.map(
                       (statement) => _buildStatementItem(statement, false),
                     ),
                   ],
