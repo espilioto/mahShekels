@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -7,9 +8,11 @@ import '../models/statement_filter_model.dart';
 import '../models/statement_request_model.dart';
 import '../models/statement_model.dart';
 import '../models/statement_sorting_request.dart';
+import '../utils/jwt_http_client.dart';
 
 class StatementProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   bool _isLoading = false;
   String _errorMessage = '';
@@ -26,12 +29,14 @@ class StatementProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  Future<void> fetchStatements() async {
+  Future<void> fetchStatements(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.get(Uri.parse('$apiUrl/api/statements'));
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(Uri.parse('$apiUrl/api/statements'));
+      
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
         _allStatements = data.map((json) => Statement.fromJson(json)).toList();
@@ -175,6 +180,7 @@ class StatementProvider with ChangeNotifier {
   }
 
   Future<({bool success, String message})> updateStatement(
+    BuildContext context,
     int statementId,
     StatementRequest statement,
   ) async {
@@ -187,10 +193,9 @@ class StatementProvider with ChangeNotifier {
         headers: {'Content-Type': 'application/json'},
         body: json.encode(statement.toJson()),
       );
-
       if (response.statusCode == 200) {
         _errorMessage = '';
-        await fetchStatements();
+        await fetchStatements(context);
         return (success: true, message: 'Statement updated successfully');
       } else {
         final errorData = json.decode(response.body);

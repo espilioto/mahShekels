@@ -29,6 +29,7 @@ class _StatsYearlyBreakdownMainScreenState
     ).fetchYearlyBreakdownData(
       widget.ignoreInitsAndTransfers,
       widget.ignoreLoans,
+      context
     );
   }
 

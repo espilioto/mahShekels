@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/chart_data_provider.dart';
 import '../screens/home_screen.dart';
+import '../screens/login_screen.dart';
 import '../providers/account_provider.dart';
 import '../providers/category_provider.dart';
+import '../providers/chart_data_provider.dart';
 import '../providers/statement_provider.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,27 +44,32 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => AccountProvider()..fetchAccounts(),
+          create: (_) => AccountProvider()..fetchAccounts(context),
         ),
         ChangeNotifierProvider(
-          create: (_) => StatementProvider()..fetchStatements(),
+          create: (_) => StatementProvider()..fetchStatements(context),
         ),
         ChangeNotifierProvider(
-          create: (_) => CategoryProvider()..fetchCategories(),
+          create: (_) => CategoryProvider()..fetchCategories(context),
         ),
         ChangeNotifierProvider(
           create:
               (_) =>
                   ChartDataProvider()
-                    ..fetchOverviewBalanceChartData()
-                    ..fetchMonthlyBreakdownData(true, false)
-                    ..fetchYearlyBreakdownData(true, true)
+                    ..fetchOverviewBalanceChartData(context)
+                    ..fetchMonthlyBreakdownData(true, false, context)
+                    ..fetchYearlyBreakdownData(true, true, context),
         ),
       ],
       child: MaterialApp(
         title: 'mahShekels',
         theme: ThemeData(colorScheme: ColorScheme.dark()),
-        home: HomeScreen(),
+        navigatorKey: navigatorKey,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const LoginScreen(),
+          '/home': (context) => const HomeScreen(),
+        },
       ),
     );
   }

@@ -25,9 +25,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
       body: generateOverview(accountProvider, chartDataProvider),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          accountProvider.fetchAccounts();
-          chartDataProvider.fetchOverviewBalanceChartData();
-          categoryProvider.fetchCategories();
+          accountProvider.fetchAccounts(context);
+          chartDataProvider.fetchOverviewBalanceChartData(context);
+          categoryProvider.fetchCategories(context);
         },
         child: Icon(Icons.refresh),
       ),

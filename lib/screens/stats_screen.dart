@@ -40,6 +40,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 ).fetchMonthlyBreakdownData(
                   _ignoreInitsAndTransfers,
                   _ignoreLoans,
+                  context
                 );
               });
             },

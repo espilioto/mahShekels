@@ -38,6 +38,7 @@ class _StatsYearlyBreakdownDetailScreenState
       widget.year,
       widget.ignoreInitsAndTransfers,
       widget.ignoreLoans,
+      context
     );
   }
 

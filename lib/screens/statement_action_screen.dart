@@ -281,8 +281,9 @@ class _StatementFormScreenState extends State<StatementFormActionScreen> {
         result = await statementProvider.postStatement(statementToSubmit);
       } else if (widget.action == ActionType.edit) {
         result = await statementProvider.updateStatement(
+          context,
           _id,
-          statementToSubmit,
+          statementToSubmit
         );
       }
 
@@ -295,7 +296,7 @@ class _StatementFormScreenState extends State<StatementFormActionScreen> {
       );
 
       if (result.success && mounted) {
-        statementProvider.fetchStatements();
+        statementProvider.fetchStatements(context);
       }
     }
   }

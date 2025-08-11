@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 
 import '../models/stats_breakdown_data_for_month_model.dart';
@@ -9,9 +9,11 @@ import '../models/stats_category_details_data_model.dart';
 import '../models/stats_monthly_breakdown_data_model.dart';
 import '../models/stats_savings_data_model.dart';
 import '../models/stats_yearly_breakdown_data_model.dart';
+import '../utils/jwt_http_client.dart'; // Import your client
 
 class ChartDataProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   List<GenericKeyValueModel> _overviewBalanceChartData = [];
   List<StatsMonthlyBreakdownData> _monthlyBreakdownData = [];
@@ -34,13 +36,14 @@ class ChartDataProvider with ChangeNotifier {
 
   Future<StatsCategoryDetailsDataModel?> fetchCategoryAnalyticsChartData(
     int categoryId,
+    BuildContext context,
   ) async {
     _isLoading = true;
-    // Schedule the notification for the next frame instead of immediate
     Future.microtask(() => notifyListeners());
 
     try {
-      final response = await http.get(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(
         Uri.parse(
           '$apiUrl/api/Charts/GetCategoryAnalyticsChartData?categoryId=$categoryId',
         ),
@@ -61,7 +64,6 @@ class ChartDataProvider with ChangeNotifier {
       return null;
     } finally {
       _isLoading = false;
-      // Again, schedule for next frame
       Future.microtask(() => notifyListeners());
     }
   }
@@ -71,13 +73,14 @@ class ChartDataProvider with ChangeNotifier {
     int year,
     bool ignoreInitsAndTransfers,
     bool ignoreLoans,
+    BuildContext context,
   ) async {
     _isLoading = true;
-    // Schedule the notification for the next frame instead of immediate
     Future.microtask(() => notifyListeners());
 
     try {
-      final response = await http.get(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(
         Uri.parse(
           '$apiUrl/api/Charts/GetBreakdownDataForMonth?month=$month&year=$year&ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
@@ -98,7 +101,6 @@ class ChartDataProvider with ChangeNotifier {
       return null;
     } finally {
       _isLoading = false;
-      // Again, schedule for next frame
       Future.microtask(() => notifyListeners());
     }
   }
@@ -106,12 +108,14 @@ class ChartDataProvider with ChangeNotifier {
   Future<void> fetchMonthlyBreakdownData(
     bool ignoreInitsAndTransfers,
     bool ignoreLoans,
+    BuildContext context,
   ) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.get(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(
         Uri.parse(
           '$apiUrl/api/Charts/GetMonthlyBreakdownData?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
@@ -139,12 +143,14 @@ class ChartDataProvider with ChangeNotifier {
   Future<void> fetchYearlyBreakdownData(
     bool ignoreInitsAndTransfers,
     bool ignoreLoans,
+    BuildContext context,
   ) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.get(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(
         Uri.parse(
           '$apiUrl/api/Charts/GetYearlyBreakdownData?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
@@ -173,13 +179,14 @@ class ChartDataProvider with ChangeNotifier {
     int year,
     bool ignoreInitsAndTransfers,
     bool ignoreLoans,
+    BuildContext context,
   ) async {
     _isLoading = true;
-    // Schedule the notification for the next frame instead of immediate
     Future.microtask(() => notifyListeners());
 
     try {
-      final response = await http.get(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(
         Uri.parse(
           '$apiUrl/api/Charts/GetBreakdownDataForYear?year=$year&ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),
@@ -200,17 +207,17 @@ class ChartDataProvider with ChangeNotifier {
       return null;
     } finally {
       _isLoading = false;
-      // Again, schedule for next frame
       Future.microtask(() => notifyListeners());
     }
   }
 
-  Future<void> fetchOverviewBalanceChartData() async {
+  Future<void> fetchOverviewBalanceChartData(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.get(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(
         Uri.parse('$apiUrl/api/Charts/GetOverviewBalanceChartData'),
       );
 
@@ -233,12 +240,14 @@ class ChartDataProvider with ChangeNotifier {
   Future<void> fetchSavingsChartData(
     bool ignoreInitsAndTransfers,
     bool ignoreLoans,
+    BuildContext context,
   ) async {
     _isLoading = true;
     Future.microtask(() => notifyListeners());
 
     try {
-      final response = await http.get(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(
         Uri.parse(
           '$apiUrl/api/Charts/GetSavingsRateChartData?ignoreInitsAndTransfers=$ignoreInitsAndTransfers&ignoreloans=$ignoreLoans',
         ),

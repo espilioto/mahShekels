@@ -41,7 +41,7 @@ class _StatementsScreenState extends State<StatementsScreen> {
     await Provider.of<StatementProvider>(
       context,
       listen: false,
-    ).fetchStatements();
+    ).fetchStatements(context);
   }
 
   Future<void> _pickDateRange(BuildContext context) async {

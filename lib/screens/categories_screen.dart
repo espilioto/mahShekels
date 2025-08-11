@@ -24,7 +24,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     await Provider.of<CategoryProvider>(
       context,
       listen: false,
-    ).fetchCategories();
+    ).fetchCategories(context);
   }
 
   @override

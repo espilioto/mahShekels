@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 
-import '/models/category_model.dart';
+import '../utils/jwt_http_client.dart';
+import '../models/category_model.dart';
 
 class CategoryProvider with ChangeNotifier {
   final apiUrl = dotenv.env['API_URL'];
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   List<Category> _categories = [];
   bool _isLoading = false;
@@ -16,12 +18,14 @@ class CategoryProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  Future<void> fetchCategories() async {
+  Future<void> fetchCategories(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.get(Uri.parse('$apiUrl/api/categories'));
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.get(Uri.parse('$apiUrl/api/categories'));
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
         _categories = data.map((json) => Category.fromJson(json)).toList();
