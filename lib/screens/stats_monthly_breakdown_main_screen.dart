@@ -29,7 +29,7 @@ class _StatsMonthlyBreakdownMainScreenState
     ).fetchMonthlyBreakdownData(
       widget.ignoreInitsAndTransfers,
       widget.ignoreLoans,
-      context
+      context,
     );
   }
 

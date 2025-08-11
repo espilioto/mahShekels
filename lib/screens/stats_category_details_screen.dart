@@ -54,7 +54,10 @@ class _StatsMonthlyBreakdownMainScreenState
                     }
 
                     _screenDataFuture = chartDataProvider
-                        .fetchCategoryAnalyticsChartData(_selectedCategoryId!, context);
+                        .fetchCategoryAnalyticsChartData(
+                          _selectedCategoryId!,
+                          context,
+                        );
                   });
                 },
               ),

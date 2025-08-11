@@ -31,7 +31,7 @@ class _StatsMonthlyBreakdownMainScreenState extends State<StatsSavingsScreen> {
       provider.fetchSavingsChartData(
         widget.ignoreInitsAndTransfers,
         widget.ignoreLoans,
-        context
+        context,
       );
     });
   }
@@ -57,7 +57,7 @@ class _StatsMonthlyBreakdownMainScreenState extends State<StatsSavingsScreen> {
                           () => provider.fetchSavingsChartData(
                             widget.ignoreInitsAndTransfers,
                             widget.ignoreLoans,
-                            context
+                            context,
                           ),
                       child: const Text('Retry'),
                     ),

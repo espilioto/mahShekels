@@ -21,7 +21,10 @@ class _AccountsScreenState extends State<AccountsScreen> {
   }
 
   Future<void> _refreshData() async {
-    await Provider.of<AccountProvider>(context, listen: false).fetchAccounts(context);
+    await Provider.of<AccountProvider>(
+      context,
+      listen: false,
+    ).fetchAccounts(context);
   }
 
   @override
