@@ -53,6 +53,21 @@ class JwtHttpClient {
     return response;
   }
 
+  Future<http.Response> delete(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+  }) async {
+    final token = await _secureStorage.read(key: 'token');
+    final authHeaders = {
+      ...?headers,
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
+    final response = await http.delete(url, headers: authHeaders, body: body);
+    _handle401(response);
+    return response;
+  }
+
   void _handle401(http.Response response) {
     if (response.statusCode == 401) {
       _secureStorage.delete(key: 'token');

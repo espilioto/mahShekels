@@ -577,7 +577,7 @@ class _StatementsScreenState extends State<StatementsScreen> {
                   result = await Provider.of<StatementProvider>(
                     context,
                     listen: false,
-                  ).deleteStatement(statementId);
+                  ).deleteStatement(context, statementId);
                   Navigator.pop(ctx);
                 },
                 child: const Text(

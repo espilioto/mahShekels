@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/statement_filter_model.dart';
@@ -36,7 +35,7 @@ class StatementProvider with ChangeNotifier {
     try {
       final client = JwtHttpClient(context, _secureStorage);
       final response = await client.get(Uri.parse('$apiUrl/api/statements'));
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
         _allStatements = data.map((json) => Statement.fromJson(json)).toList();
@@ -120,13 +119,15 @@ class StatementProvider with ChangeNotifier {
   }
 
   Future<({bool success, String message})> deleteStatement(
+    BuildContext context,
     int statementId,
   ) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.delete(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.delete(
         Uri.parse('$apiUrl/api/statements/$statementId'),
       );
 
@@ -140,7 +141,7 @@ class StatementProvider with ChangeNotifier {
         return (success: false, message: _errorMessage);
       }
     } catch (e) {
-      _errorMessage = 'Error fetching statements: $e';
+      _errorMessage = 'Error deleting statement: $e';
       return (success: false, message: _errorMessage);
     } finally {
       _isLoading = false;
@@ -149,13 +150,15 @@ class StatementProvider with ChangeNotifier {
   }
 
   Future<({bool success, String message})> postStatement(
+    BuildContext context,
     StatementRequest statement,
   ) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await http.post(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.post(
         Uri.parse('$apiUrl/api/statements'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(statement),
@@ -188,11 +191,13 @@ class StatementProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await http.put(
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.put(
         Uri.parse('$apiUrl/api/statements/$statementId'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(statement.toJson()),
       );
+
       if (response.statusCode == 200) {
         _errorMessage = '';
         await fetchStatements(context);
