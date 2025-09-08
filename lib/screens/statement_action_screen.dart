@@ -278,7 +278,10 @@ class _StatementFormScreenState extends State<StatementFormActionScreen> {
 
       if (widget.action == ActionType.create ||
           widget.action == ActionType.duplicate) {
-        result = await statementProvider.postStatement(context, statementToSubmit);
+        result = await statementProvider.postStatement(
+          context,
+          statementToSubmit,
+        );
       } else if (widget.action == ActionType.edit) {
         result = await statementProvider.updateStatement(
           context,
