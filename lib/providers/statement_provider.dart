@@ -215,4 +215,34 @@ class StatementProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<({bool success, String message})> markAllUncheckedNow(
+    BuildContext context,
+  ) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final client = JwtHttpClient(context, _secureStorage);
+      final response = await client.put(
+        Uri.parse('$apiUrl/api/statements/markAllUncheckedNow'),
+      );
+
+      if (response.statusCode == 200) {
+        _errorMessage = '';
+        _isLoading = false;
+        return (success: true, message: 'Statements checked! ✅');
+      } else {
+        final errorData = json.decode(response.body);
+        _errorMessage = errorData['message'] ?? 'Failed to check statements';
+        return (success: false, message: _errorMessage);
+      }
+    } catch (e) {
+      _errorMessage = 'Error checking statements: $e';
+      return (success: false, message: _errorMessage);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

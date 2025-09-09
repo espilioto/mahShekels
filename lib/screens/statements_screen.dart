@@ -204,6 +204,14 @@ class _StatementsScreenState extends State<StatementsScreen> {
             icon: const Icon(Icons.filter_alt_off),
             onPressed: () => _clearFilters(),
           ),
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () async {
+              await Provider.of<StatementProvider>(context, listen: false,).markAllUncheckedNow(context);
+              await _refreshData();
+              Navigator.of(context).pop();
+            },
+          ),
         ],
       ),
       body: RefreshIndicator(
