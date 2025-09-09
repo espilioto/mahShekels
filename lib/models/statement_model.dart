@@ -7,6 +7,7 @@ class Statement {
   final double amount;
   final String description;
   final String? userId;
+  final DateTime? checkedAt;
   final StatementCategory category;
   final StatementAccount account;
 
@@ -18,6 +19,7 @@ class Statement {
     required this.userId,
     required this.category,
     required this.account,
+    required this.checkedAt,
   });
 
   factory Statement.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class Statement {
       amount: json['amount'],
       description: json['description'],
       userId: json['userId'],
+      checkedAt: json['checkedAt'] != null ? DateTime.parse(json['checkedAt']) : null,
       category: StatementCategory.fromJson(json['category']),
       account: StatementAccount.fromJson(json['account']),
     );
