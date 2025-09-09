@@ -29,7 +29,8 @@ class Statement {
       amount: json['amount'],
       description: json['description'],
       userId: json['userId'],
-      checkedAt: json['checkedAt'] != null ? DateTime.parse(json['checkedAt']) : null,
+      checkedAt:
+          json['checkedAt'] != null ? DateTime.parse(json['checkedAt']) : null,
       category: StatementCategory.fromJson(json['category']),
       account: StatementAccount.fromJson(json['account']),
     );

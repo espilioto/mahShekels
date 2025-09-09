@@ -207,9 +207,31 @@ class _StatementsScreenState extends State<StatementsScreen> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              await Provider.of<StatementProvider>(context, listen: false,).markAllUncheckedNow(context);
-              await _refreshData();
-              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: const Text("Confirm"),
+                      content: const Text("Mark all statements as checked?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await Provider.of<StatementProvider>(
+                              context,
+                              listen: false,
+                            ).markAllUncheckedNow(context);
+                            Navigator.of(context).pop();
+                            await _refreshData();
+                          },
+                          child: const Text("OK"),
+                        ),
+                      ],
+                    ),
+              );
             },
           ),
         ],
@@ -461,7 +483,11 @@ class _StatementsScreenState extends State<StatementsScreen> {
                 ),
               ),
               Text(statement.account.name, style: TextStyle(fontSize: 11)),
-              if (statement.checkedAt != null) Text('Checked: ${DateFormat('d/M/y H:m').format(statement.checkedAt!)} ✅', style: TextStyle(fontSize: 11)),
+              if (statement.checkedAt != null)
+                Text(
+                  'Checked: ${DateFormat('d/M/y H:m').format(statement.checkedAt!)} ✅',
+                  style: TextStyle(fontSize: 11),
+                ),
             ],
           ),
         ),
