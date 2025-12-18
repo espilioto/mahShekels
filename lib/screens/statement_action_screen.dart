@@ -264,7 +264,6 @@ class _StatementFormScreenState extends State<StatementFormActionScreen> {
         date: _selectedDate,
         amount: double.tryParse(_amountController.text) ?? 0.0,
         description: _descriptionController.text,
-        userId: '1', //TODO update when auth is done
         categoryId: _selectedCategoryId!,
         accountid: _selectedAccountId!,
       );
