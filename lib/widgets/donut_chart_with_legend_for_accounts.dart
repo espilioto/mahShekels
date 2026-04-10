@@ -41,8 +41,9 @@ class AccountsDonutChart extends StatelessWidget {
   }
 
   Column createLegend(List<Account> accounts) {
-    accounts.sort((a, b) => b.balance.compareTo(a.balance));
-    final totalBalance = accounts.fold(
+    final sorted = List<Account>.from(accounts)
+      ..sort((a, b) => b.balance.compareTo(a.balance));
+    final totalBalance = sorted.fold(
       0.0,
       (sum, account) => sum + account.balance,
     );
@@ -51,7 +52,7 @@ class AccountsDonutChart extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
-          accounts.map((account) {
+          sorted.map((account) {
             final percentage =
                 totalBalance > 0 ? (account.balance / totalBalance * 100) : 0;
 
@@ -65,19 +66,20 @@ class AccountsDonutChart extends StatelessWidget {
   }
 
   List<PieChartSectionData> createDonutSections(List<Account> accounts) {
-    accounts.sort((a, b) => b.balance.compareTo(a.balance));
-    final totalBalance = accounts.fold(
+    final sorted = List<Account>.from(accounts)
+      ..sort((a, b) => b.balance.compareTo(a.balance));
+    final totalBalance = sorted.fold(
       0.0,
       (sum, account) => sum + account.balance,
     );
 
-    return List.generate(accounts.length, (index) {
-      final account = accounts[index];
+    return List.generate(sorted.length, (index) {
+      final account = sorted[index];
       final percentage =
           totalBalance > 0 ? (account.balance / totalBalance * 100) : 0;
 
       return PieChartSectionData(
-        color: HexColor.fromHex(accounts[index].colorHex),
+        color: HexColor.fromHex(sorted[index].colorHex),
         value: account.balance,
         title: percentage > 3 ? '${percentage.toStringAsFixed(1)}%' : '',
         radius: 60,
